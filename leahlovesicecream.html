@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leah Loves Ice Cream</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Unica+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:    #FF79C0;
+  --crimson: #B02050;
+  --blue:    #5BC8F5;
+  --green:   #2A7A3B;
+  --green-lt:#4AAD5E;
+  --yellow:  #FFD84A;
+  --orange:  #FF8C42;
+  --cream:   #FFFBE0;
+  --white:   #FFFFFF;
+  --text:    #111111;
+  --muted:   #888;
+
+  /* pin colors by type */
+  --pin-homemade:  #FF8C42;
+  --pin-softserve: #5BC8F5;
+  --pin-big:       #FFD84A;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { font-family:'Unica One',sans-serif; background:var(--cream); color:var(--text); height:100%; overflow:hidden; display:flex; flex-direction:column; }
+
+/* ─── HEADER ─── */
+header {
+  background: var(--crimson);
+  padding: 14px 32px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; z-index: 30; position: relative; overflow: hidden;
+  box-shadow: 0 4px 24px rgba(176,32,80,0.3);
+}
+header::before {
+  content:'🍦'; position:absolute; right:-10px; top:-18px;
+  font-size:130px; opacity:0.1; pointer-events:none; line-height:1;
+}
+header::after {
+  content:''; position:absolute; top:0; right:160px;
+  width:3px; height:100%; background:rgba(255,121,192,0.25);
+  transform:skewX(-12deg); pointer-events:none;
+}
+.logo { display:flex; flex-direction:column; gap:2px; position:relative; z-index:1; }
+.logo-eyebrow { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--pink); opacity:0.85; line-height:1; }
+.logo-text { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:clamp(28px,3.2vw,44px); color:var(--white); text-transform:uppercase; letter-spacing:0.03em; line-height:0.95; }
+.logo-text em { color:var(--pink); font-style:normal; }
+.header-right { display:flex; align-items:center; gap:12px; position:relative; z-index:1; }
+
+/* menu button */
+.menu-btn { width:40px; height:40px; border-radius:8px; background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,121,192,0.35); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; transition:background 0.15s; }
+.menu-btn:hover { background:rgba(255,121,192,0.25); }
+.menu-btn span { display:block; width:18px; height:2px; background:white; border-radius:2px; transition:all 0.2s; }
+.menu-btn.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.menu-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+.menu-btn.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+/* nav dropdown */
+.nav-menu { position:absolute; top:calc(100% + 8px); right:32px; width:220px; background:white; border-radius:14px; box-shadow:0 16px 48px rgba(0,0,0,0.18),0 2px 8px rgba(0,0,0,0.08); overflow:hidden; z-index:100; opacity:0; pointer-events:none; transform:translateY(-8px) scale(0.97); transform-origin:top right; transition:opacity 0.18s,transform 0.2s cubic-bezier(.34,1.56,.64,1); }
+.nav-menu.open { opacity:1; pointer-events:all; transform:translateY(0) scale(1); }
+.nav-menu-item { display:flex; align-items:center; gap:12px; padding:14px 18px; font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; text-transform:uppercase; letter-spacing:0.05em; color:var(--text); cursor:pointer; transition:background 0.12s,color 0.12s; border-bottom:1px solid #f2f2f2; text-decoration:none; }
+.nav-menu-item:last-child { border-bottom:none; }
+.nav-menu-item:hover { background:var(--crimson); color:white; }
+.nav-item-icon { font-size:18px; flex-shrink:0; width:24px; text-align:center; }
+.nav-item-sub { font-family:'Unica One',sans-serif; font-size:10px; font-weight:400; text-transform:none; letter-spacing:0.04em; opacity:0.5; display:block; margin-top:1px; line-height:1; }
+
+/* ─── PAGE SCROLL ─── */
+.page-scroll { flex:1; overflow-y:auto; overflow-x:hidden; scroll-snap-type:y mandatory; }
+
+/* ─── MAP SECTION ─── */
+.map-section { height:calc(100vh - 80px); scroll-snap-align:start; position:relative; overflow:hidden; }
+
+#map { width:100%; height:100%; }
+
+/* ─── LOADING OVERLAY ─── */
+.map-loading {
+  position:absolute; inset:0; background:var(--cream);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:16px; z-index:50; transition:opacity 0.4s;
+}
+.map-loading.hidden { opacity:0; pointer-events:none; }
+.loading-cone { font-size:56px; animation:wobble 1.2s ease-in-out infinite; }
+@keyframes wobble { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
+.loading-text { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:22px; text-transform:uppercase; letter-spacing:0.08em; color:var(--orange); }
+.loading-sub { font-family:'Unica One',sans-serif; font-size:13px; color:var(--muted); }
+
+/* ─── LEGEND ─── */
+.legend {
+  position:absolute; bottom:70px; left:16px;
+  background:white; border-radius:12px;
+  box-shadow:0 4px 18px rgba(0,0,0,0.12);
+  border:1px solid rgba(0,0,0,0.07);
+  padding:12px 16px; z-index:10;
+}
+.legend-title { font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text); margin-bottom:8px; }
+.legend-item { display:flex; align-items:center; gap:8px; font-family:'Unica One',sans-serif; font-size:12px; color:#444; margin-bottom:5px; }
+.legend-item:last-child { margin-bottom:0; }
+.ldot { width:13px; height:13px; border-radius:50%; border:2px solid rgba(0,0,0,0.12); flex-shrink:0; }
+
+/* ─── COUNTER ─── */
+.counter {
+  position:absolute; bottom:70px; right:16px;
+  background:#FF6B00; border-radius:12px;
+  box-shadow:0 6px 20px rgba(255,107,0,0.28);
+  padding:12px 20px; z-index:10; text-align:center; color:white;
+}
+.counter-num { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:40px; line-height:1; color:#FFD84A; }
+.counter-label { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.8; margin-top:3px; }
+
+/* ─── SCROLL HINT ─── */
+.scroll-hint { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:5px; z-index:10; cursor:pointer; opacity:0.8; transition:opacity 0.15s; }
+.scroll-hint:hover { opacity:1; }
+.scroll-hint-label { font-family:'Big Shoulders Display',sans-serif; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:#FF6B00; }
+.scroll-arrow { width:28px; height:28px; background:#FF6B00; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; animation:bounce 1.8s ease-in-out infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+/* ─── CUSTOM MAP PIN (via overlay) ─── */
+.gmap-pin {
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  cursor:pointer; transform:translateY(-100%);
+  transition:transform 0.15s cubic-bezier(.34,1.56,.64,1);
+}
+.gmap-pin:hover { transform:translateY(-100%) scale(1.15); }
+.gmap-pin-circle {
+  width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; border:2.5px solid rgba(255,255,255,0.85);
+  box-shadow:0 4px 14px rgba(0,0,0,0.22);
+}
+.gmap-pin-label {
+  font-family:'Big Shoulders Display',sans-serif; font-weight:800;
+  font-size:10px; text-transform:uppercase; letter-spacing:0.06em;
+  padding:2px 7px; border-radius:4px; color:white; white-space:nowrap;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15); line-height:1.5;
+}
+.gmap-pin-label.dark { color:#111; }
+
+/* ─── POPUP CARD ─── */
+.popup-card {
+  position:fixed; z-index:200;
+  width:300px;
+  background:white; border-radius:18px;
+  box-shadow:0 16px 48px rgba(0,0,0,0.16),0 2px 8px rgba(0,0,0,0.06);
+  border:1px solid rgba(0,0,0,0.07);
+  overflow:hidden;
+  opacity:0; pointer-events:none;
+  transform:scale(0.93) translateY(8px);
+  transition:opacity 0.18s,transform 0.2s cubic-bezier(.34,1.56,.64,1);
+}
+.popup-card.visible { opacity:1; pointer-events:all; transform:scale(1) translateY(0); }
+
+.popup-stripe { height:5px; width:100%; }
+
+.popup-inner { padding:15px 18px 18px; }
+
+.popup-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px; }
+.popup-name { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:21px; text-transform:uppercase; letter-spacing:0.04em; color:var(--text); line-height:1.1; flex:1; padding-right:8px; }
+.popup-close { width:26px; height:26px; border-radius:50%; border:1.5px solid #e0e0e0; background:#f7f7f7; cursor:pointer; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; color:#555; flex-shrink:0; transition:background 0.12s; font-family:sans-serif; }
+.popup-close:hover { background:var(--pink); color:white; border-color:var(--pink); }
+
+/* vibe tags under name */
+.popup-vibes { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
+.vibe-tag { font-family:'Unica One',sans-serif; font-size:11px; padding:3px 9px; border-radius:50px; background:#f0f0f0; color:#555; letter-spacing:0.03em; }
+
+/* star rating */
+.popup-stars-row { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.popup-stars { display:flex; gap:1px; }
+.star-full, .star-half, .star-empty { font-size:17px; }
+.star-full  { color:#FF8C42; }
+.star-half  { position:relative; display:inline-block; }
+.star-half::before { content:'★'; color:#FF8C42; position:absolute; left:0; width:50%; overflow:hidden; }
+.star-half::after  { content:'★'; color:#ddd; }
+.star-empty { color:#ddd; }
+.popup-rating-num { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:18px; color:var(--text); }
+
+.popup-divider { height:1px; background:#f2f2f2; margin:10px 0; }
+
+/* sub-score bars */
+.popup-row { display:flex; gap:9px; align-items:flex-start; margin-bottom:8px; }
+.popup-row-icon { font-size:13px; flex-shrink:0; margin-top:2px; }
+.popup-row-label { font-family:'Big Shoulders Display',sans-serif; font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); display:block; margin-bottom:3px; }
+.popup-row-val { font-family:'Unica One',sans-serif; color:var(--text); font-size:13px; line-height:1.45; }
+
+.score-bars { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
+.score-bar-row { display:flex; align-items:center; gap:8px; }
+.score-bar-label { font-family:'Unica One',sans-serif; font-size:11px; color:#666; width:120px; flex-shrink:0; }
+.score-bar-track { flex:1; height:6px; background:#f0f0f0; border-radius:3px; overflow:hidden; }
+.score-bar-fill { height:100%; border-radius:3px; background:var(--orange); transition:width 0.6s cubic-bezier(.34,1.56,.64,1); }
+.score-bar-num { font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:12px; color:var(--text); width:20px; text-align:right; flex-shrink:0; }
+
+/* bonus tags */
+.popup-bonus-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:4px; }
+.bonus-tag { font-family:'Unica One',sans-serif; font-size:11px; padding:3px 9px; border-radius:5px; background:#FFF3E0; color:#E05A00; border:1px solid rgba(255,140,0,0.2); letter-spacing:0.03em; }
+
+/* maps button */
+.maps-btn { display:flex; align-items:center; justify-content:center; gap:6px; background:#FF6B00; color:white; border:none; border-radius:8px; padding:10px 0; width:100%; font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:14px; text-transform:uppercase; letter-spacing:0.07em; cursor:pointer; text-decoration:none; margin-top:12px; transition:background 0.15s,transform 0.12s; box-shadow:0 3px 10px rgba(255,107,0,0.25); }
+.maps-btn:hover { background:#FF9100; transform:translateY(-1px); }
+
+/* ─── TOP 10 SECTION ─── */
+.top10-section { min-height:calc(100vh - 80px); scroll-snap-align:start; background:#2A7A3B; padding:48px 0 56px; position:relative; overflow:hidden; }
+.top10-section::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle at 15% 30%,rgba(62,198,245,0.15) 0%,transparent 55%),radial-gradient(circle at 85% 70%,rgba(20,80,30,0.4) 0%,transparent 55%); pointer-events:none; }
+.top10-header { text-align:center; margin-bottom:36px; position:relative; z-index:2; padding:0 32px; }
+.top10-eyebrow { font-family:'Unica One',sans-serif; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; color:#5BC8F5; margin-bottom:8px; }
+.top10-title { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:clamp(48px,7vw,80px); text-transform:uppercase; letter-spacing:0.04em; color:white; line-height:0.95; }
+.top10-title em { color:#5BC8F5; font-style:normal; }
+.top10-sub { font-family:'Unica One',sans-serif; font-size:14px; color:rgba(255,255,255,0.5); margin-top:10px; letter-spacing:0.04em; }
+
+.carousel-wrap { position:relative; z-index:2; }
+.carousel-track-outer { overflow:hidden; padding:0 0 8px; }
+.carousel-track { display:flex; gap:20px; padding:8px 40px; transition:transform 0.42s cubic-bezier(0.25,1,0.5,1); will-change:transform; }
+
+.top10-card { flex-shrink:0; width:240px; background:white; border-radius:18px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,0.22); transition:transform 0.2s cubic-bezier(.34,1.56,.64,1); cursor:default; }
+.top10-card:hover { transform:translateY(-6px) scale(1.02); }
+.card-top { height:100px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.card-rank { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:80px; color:rgba(255,255,255,0.2); position:absolute; right:10px; bottom:-12px; line-height:1; letter-spacing:-0.02em; pointer-events:none; user-select:none; }
+.card-emoji { font-size:42px; position:relative; z-index:1; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.12)); }
+.card-body { padding:14px 16px 16px; }
+.card-name { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:17px; text-transform:uppercase; letter-spacing:0.04em; color:var(--text); line-height:1.15; margin-bottom:3px; }
+.card-location { font-family:'Unica One',sans-serif; font-size:11px; color:var(--muted); letter-spacing:0.04em; margin-bottom:8px; }
+.card-stars { display:flex; gap:2px; margin-bottom:8px; }
+.card-star { font-size:13px; color:#FF8C42; }
+.card-note { font-family:'Unica One',sans-serif; font-size:12px; color:#666; line-height:1.5; font-style:italic; }
+
+.carousel-nav { display:flex; justify-content:center; gap:12px; margin-top:28px; position:relative; z-index:2; }
+.nav-btn { width:44px; height:44px; border-radius:50%; border:2px solid rgba(91,200,245,0.4); background:rgba(255,255,255,0.08); color:white; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; font-family:sans-serif; }
+.nav-btn:hover { background:#5BC8F5; border-color:#5BC8F5; color:#111; transform:scale(1.08); }
+.nav-btn:disabled { opacity:0.3; cursor:default; transform:none !important; }
+.carousel-dots { display:flex; justify-content:center; gap:7px; margin-top:16px; position:relative; z-index:2; }
+.cdot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.3); transition:all 0.2s; cursor:pointer; }
+.cdot.active { background:#5BC8F5; width:22px; border-radius:4px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <span class="logo-eyebrow">A sweet adventure log</span>
+    <span class="logo-text">Leah <em>Loves</em> Ice Cream</span>
+  </div>
+  <div class="header-right">
+    <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="nav-menu" id="navMenu">
+    <a class="nav-menu-item" href="#" onclick="closeMenu()"><span class="nav-item-icon">🗺️</span><div><span>Map</span><span class="nav-item-sub">Explore visited spots</span></div></a>
+    <a class="nav-menu-item" href="#" onclick="scrollToTop10();closeMenu()"><span class="nav-item-icon">🏆</span><div><span>Rankings</span><span class="nav-item-sub">Leah's top 10 list</span></div></a>
+    <a class="nav-menu-item" href="#" onclick="closeMenu()"><span class="nav-item-icon">📓</span><div><span>Side Quests</span><span class="nav-item-sub">Blog & adventures</span></div></a>
+    <a class="nav-menu-item" href="#" onclick="closeMenu()"><span class="nav-item-icon">🍦</span><div><span>About Leah</span><span class="nav-item-sub">The scoop on the scooper</span></div></a>
+  </nav>
+</header>
+
+<div class="page-scroll" id="pageScroll">
+
+  <!-- MAP SECTION -->
+  <div class="map-section">
+    <div id="map"></div>
+
+    <!-- loading -->
+    <div class="map-loading" id="mapLoading">
+      <div class="loading-cone">🍦</div>
+      <div class="loading-text">Finding the scoops...</div>
+      <div class="loading-sub">Loading all visited spots</div>
+    </div>
+
+    <!-- legend -->
+    <div class="legend">
+      <div class="legend-title">Type</div>
+      <div class="legend-item"><div class="ldot" style="background:#FF8C42"></div>Homemade</div>
+      <div class="legend-item"><div class="ldot" style="background:#5BC8F5"></div>Soft Serve</div>
+      <div class="legend-item"><div class="ldot" style="background:#FFD84A"></div>Big Chain</div>
+    </div>
+
+    <!-- counter -->
+    <div class="counter" id="spotCounter">
+      <div class="counter-num" id="counterNum">—</div>
+      <div class="counter-label">Scoops Rated</div>
+    </div>
+
+    <!-- scroll hint -->
+    <div class="scroll-hint" onclick="scrollToTop10()">
+      <div class="scroll-hint-label">Top 10 List ↓</div>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </div>
+
+  <!-- TOP 10 SECTION -->
+  <div class="top10-section" id="top10">
+    <div class="top10-header">
+      <div class="top10-eyebrow">Leah's official ranking</div>
+      <div class="top10-title">Top <em>10</em><br>Ice Cream Spots</div>
+      <div class="top10-sub">Updated as I eat my way through the world 🍦</div>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack"></div>
+      </div>
+      <div class="carousel-nav">
+        <button class="nav-btn" id="prevBtn" onclick="moveCarousel(-1)">←</button>
+        <button class="nav-btn" id="nextBtn" onclick="moveCarousel(1)">→</button>
+      </div>
+      <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- POPUP CARD -->
+<div class="popup-card" id="popupCard">
+  <div class="popup-stripe" id="popupStripe"></div>
+  <div class="popup-inner">
+    <div class="popup-top">
+      <div class="popup-name" id="popupName"></div>
+      <button class="popup-close" onclick="closePopup()">✕</button>
+    </div>
+    <div class="popup-vibes" id="popupVibes"></div>
+    <div class="popup-stars-row">
+      <div class="popup-stars" id="popupStars"></div>
+      <div class="popup-rating-num" id="popupRatingNum"></div>
+    </div>
+    <div class="score-bars" id="scoreBars"></div>
+    <div class="popup-divider"></div>
+    <div class="popup-row">
+      <span class="popup-row-icon">🍨</span>
+      <div><span class="popup-row-label">Flavor Ordered</span><span class="popup-row-val" id="popupFlavor"></span></div>
+    </div>
+    <div class="popup-divider"></div>
+    <div class="popup-row" id="popupCommentsRow">
+      <span class="popup-row-icon">💬</span>
+      <div><span class="popup-row-label">Additional Comments</span><span class="popup-row-val" id="popupComments"></span></div>
+    </div>
+    <div class="popup-divider" id="popupCommentsDivider"></div>
+    <div class="popup-row">
+      <span class="popup-row-icon">✨</span>
+      <div>
+        <span class="popup-row-label">Bonuses</span>
+        <div class="popup-bonus-tags" id="popupBonuses"></div>
+      </div>
+    </div>
+    <a class="maps-btn" id="popupMapsBtn" href="#" target="_blank">📍 Open in Google Maps</a>
+  </div>
+</div>
+
+<!-- Google Maps -->
+<script>
+const SHEET_ID = '1FWTUBZaZFE6S99jrON26zAg2W8-Y465udQssaSBKvCM';
+const API_KEY  = 'AIzaSyDGgZg3qjsf7vojo47ryZ4fw28lauvKgB0';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+// ── column mapping (0-indexed, matches your sheet order) ──
+const COL = {
+  timestamp:  0,
+  name:       1,
+  address:    2,
+  date:       3,
+  type:       4,
+  flavor:     5,
+  taste:      6,
+  texture:    7,
+  mixins:     8,
+  bang:       9,
+  desirability: 10,
+  vibe:       11,
+  bonuses:    12,
+  comments:   13
+};
+
+const TYPE_COLORS = {
+  'homemade ice cream': '#FF8C42',
+  'soft serve':         '#5BC8F5',
+  'big ice cream':      '#FFD84A'
+};
+
+const TYPE_LABEL_DARK = { 'big ice cream': true };
+
+const SCORE_LABELS = [
+  { key:'taste',        label:'Taste',                    icon:'👅' },
+  { key:'texture',      label:'Texture',                  icon:'✋' },
+  { key:'mixins',       label:'Mix-ins',                  icon:'🍫' },
+  { key:'bang',         label:'Bang for Buck',            icon:'💰' },
+  { key:'desirability', label:'Other Flavors',            icon:'🧁' }
+];
+
+let map, allSpots = [], markers = [];
+
+// ── fetch sheet data ──
+async function loadSheetData() {
+  try {
+    const res = await fetch(SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows = json.table.rows;
+
+    allSpots = rows.map(row => {
+      const c = row.c;
+      const get = i => (c[i] && c[i].v !== null && c[i].v !== undefined) ? String(c[i].v).trim() : '';
+      const getNum = i => { const v = parseFloat(get(i)); return isNaN(v) ? 0 : v; };
+
+      const taste   = getNum(COL.taste);
+      const texture = getNum(COL.texture);
+      const mixins  = getNum(COL.mixins);
+      const bang    = getNum(COL.bang);
+      const desir   = getNum(COL.desirability);
+      const avg     = (taste + texture + mixins + bang + desir) / 5;
+      const stars   = Math.round(avg) / 2; // out of 5
+
+      const rawVibes   = get(COL.vibe);
+      const rawBonuses = get(COL.bonuses);
+
+      return {
+        name:     get(COL.name),
+        address:  get(COL.address),
+        date:     get(COL.date),
+        type:     get(COL.type).toLowerCase(),
+        flavor:   get(COL.flavor),
+        taste, texture, mixins, bang, desirability: desir,
+        stars,
+        rating:   Math.round(avg * 10) / 10,
+        vibes:    parseMultiSelect(rawVibes),
+        bonuses:  parseMultiSelect(rawBonuses),
+        comments: get(COL.comments),
+        mapsUrl:  `https://maps.google.com/?q=${encodeURIComponent(get(COL.address))}`
+      };
+    }).filter(s => s.name && s.address);
+
+    document.getElementById('counterNum').textContent = allSpots.length;
+    return allSpots;
+  } catch(e) {
+    console.error('Sheet load error:', e);
+    return [];
+  }
+}
+
+function parseMultiSelect(raw) {
+  if (!raw) return [];
+  return raw.split(',').map(s => {
+    s = s.trim();
+    if (s.toLowerCase().startsWith('other:')) s = s.slice(6).trim();
+    return s;
+  }).filter(Boolean);
+}
+
+// ── star rendering ──
+function renderStars(stars) {
+  let html = '';
+  for (let i = 1; i <= 5; i++) {
+    if (stars >= i) html += '<span class="star-full">★</span>';
+    else if (stars >= i - 0.5) html += '<span class="star-half">★</span>';
+    else html += '<span class="star-empty">★</span>';
+  }
+  return html;
+}
+
+// ── show popup ──
+function showPopup(spot, position) {
+  const card = document.getElementById('popupCard');
+  const color = TYPE_COLORS[spot.type] || '#FF8C42';
+
+  document.getElementById('popupStripe').style.background = color;
+  document.getElementById('popupName').textContent = spot.name;
+  document.getElementById('popupStars').innerHTML = renderStars(spot.stars);
+  document.getElementById('popupRatingNum').textContent = spot.rating.toFixed(1) + ' / 5';
+  document.getElementById('popupFlavor').textContent = spot.flavor || '—';
+  document.getElementById('popupMapsBtn').href = spot.mapsUrl;
+
+  // vibes
+  const vibesEl = document.getElementById('popupVibes');
+  vibesEl.innerHTML = spot.vibes.map(v => `<span class="vibe-tag">${v}</span>`).join('');
+
+  // score bars
+  const barsEl = document.getElementById('scoreBars');
+  barsEl.innerHTML = SCORE_LABELS.map(s => `
+    <div class="score-bar-row">
+      <div class="score-bar-label">${s.icon} ${s.label}</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:${spot[s.key]*10}%;background:${color}"></div></div>
+      <div class="score-bar-num">${spot[s.key]}</div>
+    </div>`).join('');
+
+  // comments
+  const commentsRow = document.getElementById('popupCommentsRow');
+  const commentsDivider = document.getElementById('popupCommentsDivider');
+  if (spot.comments) {
+    document.getElementById('popupComments').textContent = spot.comments;
+    commentsRow.style.display = 'flex';
+    commentsDivider.style.display = 'block';
+  } else {
+    commentsRow.style.display = 'none';
+    commentsDivider.style.display = 'none';
+  }
+
+  // bonuses
+  const bonusEl = document.getElementById('popupBonuses');
+  bonusEl.innerHTML = spot.bonuses.length
+    ? spot.bonuses.map(b => `<span class="bonus-tag">${b}</span>`).join('')
+    : '<span style="font-family:Unica One,sans-serif;font-size:12px;color:#aaa">None noted</span>';
+
+  // position near click, keep on screen
+  const W = window.innerWidth, H = window.innerHeight;
+  const cardW = 300, cardH = 480;
+  let x = position.x + 16, y = position.y - cardH / 2;
+  if (x + cardW > W - 10) x = position.x - cardW - 16;
+  if (y < 10) y = 10;
+  if (y + cardH > H - 10) y = H - cardH - 10;
+  card.style.left = x + 'px';
+  card.style.top  = y + 'px';
+  card.classList.add('visible');
+}
+
+function closePopup() {
+  document.getElementById('popupCard').classList.remove('visible');
+}
+
+// ── geocode and place markers ──
+async function geocodeAndPin(spot) {
+  return new Promise(resolve => {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: spot.address }, (results, status) => {
+      if (status === 'OK') {
+        const pos = results[0].geometry.location;
+        placeMarker(spot, pos);
+      }
+      resolve();
+    });
+  });
+}
+
+function placeMarker(spot, position) {
+  const color  = TYPE_COLORS[spot.type] || '#FF8C42';
+  const isDark = TYPE_LABEL_DARK[spot.type];
+
+  const pinDiv = document.createElement('div');
+  pinDiv.className = 'gmap-pin';
+  pinDiv.innerHTML = `
+    <div class="gmap-pin-circle" style="background:${color}">🍦</div>
+    <div class="gmap-pin-label${isDark?' dark':''}" style="background:${color}">${spot.name}</div>`;
+
+  const overlay = new google.maps.marker.AdvancedMarkerElement({
+    map,
+    position,
+    content: pinDiv,
+    title: spot.name
+  });
+
+  pinDiv.addEventListener('click', e => {
+    e.stopPropagation();
+    showPopup(spot, { x: e.clientX, y: e.clientY });
+  });
+
+  markers.push(overlay);
+}
+
+// ── init map ──
+async function initMap() {
+  const { Map } = await google.maps.importLibrary('maps');
+  await google.maps.importLibrary('marker');
+
+  map = new Map(document.getElementById('map'), {
+    center: { lat: 39.5, lng: -98.35 },
+    zoom: 4,
+    mapId: 'leah_ice_cream_map',
+    disableDefaultUI: false,
+    zoomControl: true,
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
+    styles: []
+  });
+
+  map.addListener('click', closePopup);
+
+  const spots = await loadSheetData();
+  document.getElementById('mapLoading').classList.add('hidden');
+
+  // geocode sequentially to avoid rate limits
+  for (const spot of spots) {
+    await geocodeAndPin(spot);
+    await new Promise(r => setTimeout(r, 120));
+  }
+
+  buildTop10Carousel(spots);
+}
+
+// ── top 10 carousel ──
+function buildTop10Carousel(spots) {
+  const sorted = [...spots].sort((a,b) => b.rating - a.rating).slice(0,10);
+  const track  = document.getElementById('carouselTrack');
+  const dotsEl = document.getElementById('carouselDots');
+  const emojis = ['🍦','🍨','🍧','🍦','🍨','🍧','🍦','🍨','🍧','🍦'];
+  const topColors = ['#5BC8F5','#4AAD5E','#7ECEBE'];
+
+  let cardW = 240, gap = 20, currentIdx = 0;
+
+  function visCount() {
+    const ow = track.closest('.carousel-track-outer').offsetWidth - 80;
+    return Math.max(1, Math.floor((ow + gap) / (cardW + gap)));
+  }
+
+  function build() {
+    track.innerHTML = ''; dotsEl.innerHTML = '';
+    sorted.forEach((d, i) => {
+      const card = document.createElement('div');
+      card.className = 'top10-card';
+      const col = topColors[i % topColors.length];
+      card.innerHTML = `
+        <div class="card-top" style="background:${col}">
+          <div class="card-rank">${i+1}</div>
+          <div class="card-emoji">${emojis[i]}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">${d.name}</div>
+          <div class="card-location">📍 ${d.address.split(',').slice(-2).join(',').trim()}</div>
+          <div class="card-stars">${'★'.repeat(Math.round(d.stars))}${'☆'.repeat(5-Math.round(d.stars))}</div>
+          <div class="card-note">${d.flavor ? '🍨 ' + d.flavor : ''}</div>
+        </div>`;
+      track.appendChild(card);
+    });
+
+    const pages = Math.ceil(sorted.length / visCount());
+    for (let i = 0; i < pages; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'cdot' + (i===0?' active':'');
+      dot.onclick = () => goTo(i);
+      dotsEl.appendChild(dot);
+    }
+    goTo(0);
+  }
+
+  function goTo(page) {
+    currentIdx = page;
+    const vc = visCount();
+    track.style.transform = `translateX(-${page * vc * (cardW + gap)}px)`;
+    dotsEl.querySelectorAll('.cdot').forEach((d,i) => d.classList.toggle('active', i===page));
+    document.getElementById('prevBtn').disabled = page === 0;
+    document.getElementById('nextBtn').disabled = page >= Math.ceil(sorted.length/vc)-1;
+  }
+
+  window.moveCarousel = dir => {
+    const pages = Math.ceil(sorted.length/visCount());
+    goTo(Math.max(0, Math.min(pages-1, currentIdx+dir)));
+  };
+
+  window.addEventListener('resize', build);
+  build();
+}
+
+// ── nav helpers ──
+function toggleMenu() {
+  document.getElementById('menuBtn').classList.toggle('open');
+  document.getElementById('navMenu').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('menuBtn').classList.remove('open');
+  document.getElementById('navMenu').classList.remove('open');
+}
+function scrollToTop10() {
+  document.getElementById('pageScroll').scrollTo({ top: 99999, behavior:'smooth' });
+}
+document.addEventListener('click', e => { if (!e.target.closest('header')) closeMenu(); });
+</script>
+
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGgZg3qjsf7vojo47ryZ4fw28lauvKgB0&callback=initMap&loading=async">
+</script>
+
+</body>
+</html>
