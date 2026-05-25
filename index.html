@@ -243,15 +243,15 @@ header::after {
     <span class="logo-text">Leah <em>Loves</em> Ice Cream</span>
   </div>
   <div class="header-right">
-    <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+    <button class="menu-btn" id="menuBtn" onclick="toggleMenu(event)">
       <span></span><span></span><span></span>
     </button>
   </div>
   <nav class="nav-menu" id="navMenu">
-    <a class="nav-menu-item" href="#" onclick="closeMenu()"><span class="nav-item-icon">🗺️</span><div><span>Map</span><span class="nav-item-sub">Explore visited spots</span></div></a>
+    <a class="nav-menu-item" href="index.html" onclick="closeMenu()"><span class="nav-item-icon">🗺️</span><div><span>Map</span><span class="nav-item-sub">Explore visited spots</span></div></a>
     <a class="nav-menu-item" href="#" onclick="scrollToTop10();closeMenu()"><span class="nav-item-icon">🏆</span><div><span>Rankings</span><span class="nav-item-sub">Leah's top 10 list</span></div></a>
-    <a class="nav-menu-item" href="#" onclick="closeMenu()"><span class="nav-item-icon">📓</span><div><span>Side Quests</span><span class="nav-item-sub">Blog & adventures</span></div></a>
-    <a class="nav-menu-item" href="#" onclick="closeMenu()"><span class="nav-item-icon">🍦</span><div><span>About Leah</span><span class="nav-item-sub">The scoop on the scooper</span></div></a>
+    <a class="nav-menu-item" href="sidequests.html" onclick="closeMenu()"><span class="nav-item-icon">📓</span><div><span>Side Quests</span><span class="nav-item-sub">Blog & adventures</span></div></a>
+    <a class="nav-menu-item" href="about.html" onclick="closeMenu()"><span class="nav-item-icon">🍦</span><div><span>About Leah</span><span class="nav-item-sub">The scoop on the scooper</span></div></a>
   </nav>
 </header>
 
@@ -349,7 +349,7 @@ header::after {
 <!-- Google Maps -->
 <script>
 const SHEET_ID = '1FWTUBZaZFE6S99jrON26zAg2W8-Y465udQssaSBKvCM';
-const API_KEY  = 'AIzaSyDGgZg3qjsf7vojo47ryZ4fw28lauvKgB0';
+const API_KEY  = 'YOUR_API_KEY_HERE';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
 // ── column mapping (0-indexed, matches your sheet order) ──
@@ -407,7 +407,7 @@ async function loadSheetData() {
       const bang    = getNum(COL.bang);
       const desir   = getNum(COL.desirability);
       const avg     = (taste + texture + mixins + bang + desir) / 5;
-      const stars   = Math.round(avg) / 2; // out of 5
+      const stars   = Math.round(avg / 2 * 2) / 2; // nearest 0.5, out of 5
 
       const rawVibes   = get(COL.vibe);
       const rawBonuses = get(COL.bonuses);
@@ -420,7 +420,7 @@ async function loadSheetData() {
         flavor:   get(COL.flavor),
         taste, texture, mixins, bang, desirability: desir,
         stars,
-        rating:   Math.round(avg * 10) / 10,
+        rating:   Math.round(avg / 2 * 10) / 10,
         vibes:    parseMultiSelect(rawVibes),
         bonuses:  parseMultiSelect(rawBonuses),
         comments: get(COL.comments),
@@ -560,8 +560,8 @@ async function initMap() {
   await google.maps.importLibrary('marker');
 
   map = new Map(document.getElementById('map'), {
-    center: { lat: 42.4184, lng: -71.1062 },
-    zoom: 11,
+    center: { lat: 39.5, lng: -98.35 },
+    zoom: 4,
     mapId: 'leah_ice_cream_map',
     disableDefaultUI: false,
     zoomControl: true,
@@ -649,7 +649,8 @@ function buildTop10Carousel(spots) {
 }
 
 // ── nav helpers ──
-function toggleMenu() {
+function toggleMenu(e) {
+  e.stopPropagation();
   document.getElementById('menuBtn').classList.toggle('open');
   document.getElementById('navMenu').classList.toggle('open');
 }
@@ -660,11 +661,11 @@ function closeMenu() {
 function scrollToTop10() {
   document.getElementById('pageScroll').scrollTo({ top: 99999, behavior:'smooth' });
 }
-document.addEventListener('click', e => { if (!e.target.closest('header')) closeMenu(); });
+document.addEventListener('click', e => { if (!e.target.closest('.menu-btn') && !e.target.closest('.nav-menu')) closeMenu(); });
 </script>
 
 <script async
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGgZg3qjsf7vojo47ryZ4fw28lauvKgB0&callback=initMap&loading=async">
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&callback=initMap&loading=async">
 </script>
 
 </body>

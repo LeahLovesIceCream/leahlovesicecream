@@ -399,6 +399,17 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
   color: #bbb;
   letter-spacing: 0.04em;
 }
+
+.nav-menu { position:absolute; top:calc(100% + 8px); right:32px; width:220px; background:white; border-radius:14px; box-shadow:0 16px 48px rgba(0,0,0,0.18),0 2px 8px rgba(0,0,0,0.08); overflow:hidden; z-index:100; opacity:0; pointer-events:none; transform:translateY(-8px) scale(0.97); transform-origin:top right; transition:opacity 0.18s,transform 0.2s cubic-bezier(.34,1.56,.64,1); }
+.nav-menu.open { opacity:1; pointer-events:all; transform:translateY(0) scale(1); }
+.nav-menu-item { display:flex; align-items:center; gap:12px; padding:14px 18px; font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; text-transform:uppercase; letter-spacing:0.05em; color:#111; cursor:pointer; transition:background 0.12s,color 0.12s; border-bottom:1px solid #f2f2f2; text-decoration:none; }
+.nav-menu-item:last-child { border-bottom:none; }
+.nav-menu-item:hover { background:#B02050; color:white; }
+.nav-item-icon { font-size:18px; flex-shrink:0; width:24px; text-align:center; }
+.nav-item-sub { font-family:'Unica One',sans-serif; font-size:10px; font-weight:400; text-transform:none; letter-spacing:0.04em; opacity:0.5; display:block; margin-top:1px; line-height:1; }
+.menu-btn.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.menu-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+.menu-btn.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
 </style>
 </head>
 <body>
@@ -409,9 +420,15 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
     <span class="logo-eyebrow">A sweet adventure log</span>
     <span class="logo-text">Leah <em>Loves</em> Ice Cream</span>
   </a>
-  <button class="menu-btn">
+    <button class="menu-btn" id="menuBtn" onclick="toggleMenu(event)">
     <span></span><span></span><span></span>
   </button>
+  <nav class="nav-menu" id="navMenu">
+    <a class="nav-menu-item" href="index.html"><span class="nav-item-icon">🗺️</span><div><span>Map</span><span class="nav-item-sub">Explore visited spots</span></div></a>
+    <a class="nav-menu-item" href="index.html#top10"><span class="nav-item-icon">🏆</span><div><span>Rankings</span><span class="nav-item-sub">Leah's top 10 list</span></div></a>
+    <a class="nav-menu-item" href="sidequests.html"><span class="nav-item-icon">📓</span><div><span>Side Quests</span><span class="nav-item-sub">Blog & adventures</span></div></a>
+    <a class="nav-menu-item" href="about.html"><span class="nav-item-icon">🍦</span><div><span>About Leah</span><span class="nav-item-sub">The scoop on the scooper</span></div></a>
+  </nav>
 </header>
 
 
@@ -499,5 +516,18 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
 
 </div>
 
+<script>
+function toggleMenu(e) {
+  e.stopPropagation();
+  document.getElementById('menuBtn').classList.toggle('open');
+  document.getElementById('navMenu').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.menu-btn') && !e.target.closest('.nav-menu')) {
+    document.getElementById('menuBtn').classList.remove('open');
+    document.getElementById('navMenu').classList.remove('open');
+  }
+});
+</script>
 </body>
 </html>
