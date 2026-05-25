@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Leah — Leah Loves Ice Cream</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Unica+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:    #FF79C0;
+  --crimson: #B02050;
+  --orange:  #FF8C42;
+  --yellow:  #FFD84A;
+  --blue:    #5BC8F5;
+  --green:   #2A7A3B;
+  --cream:   #FFFBE0;
+  --white:   #FFFFFF;
+  --text:    #111111;
+  --muted:   #777;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { font-family:'Unica One', sans-serif; background:var(--white); color:var(--text); min-height:100vh; }
+
+/* ─── HEADER ─── */
+header {
+  background: var(--crimson);
+  padding: 14px 32px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+  box-shadow: 0 4px 24px rgba(176,32,80,0.3);
+  z-index: 30;
+}
+header::before { content:'🍦'; position:absolute; right:-10px; top:-18px; font-size:130px; opacity:0.1; pointer-events:none; }
+header::after { content:''; position:absolute; top:0; right:160px; width:3px; height:100%; background:rgba(255,121,192,0.25); transform:skewX(-12deg); pointer-events:none; }
+.logo { display:flex; flex-direction:column; gap:2px; position:relative; z-index:1; text-decoration:none; }
+.logo-eyebrow { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--pink); opacity:0.85; }
+.logo-text { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:clamp(28px,3.2vw,44px); color:var(--white); text-transform:uppercase; letter-spacing:0.03em; line-height:0.95; }
+.logo-text em { color:var(--pink); font-style:normal; }
+.menu-btn { width:40px; height:40px; border-radius:8px; background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,121,192,0.35); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; }
+.menu-btn span { display:block; width:18px; height:2px; background:white; border-radius:2px; }
+
+/* ─── HERO ─── */
+.about-hero {
+  background: var(--crimson);
+  padding: 56px 40px 0;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-end;
+  gap: 40px;
+  min-height: 380px;
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 70% 30%, rgba(255,121,192,0.2) 0%, transparent 55%),
+    radial-gradient(circle at 5% 90%, rgba(176,32,80,0.5) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero-text { position: relative; z-index: 1; padding-bottom: 48px; }
+
+.hero-eyebrow {
+  font-family: 'Unica One', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pink);
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(64px, 10vw, 120px);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: white;
+  line-height: 0.88;
+  margin-bottom: 20px;
+}
+
+.hero-title em {
+  color: var(--pink);
+  font-style: normal;
+  display: block;
+}
+
+.hero-tagline {
+  font-family: 'Unica One', sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+/* photo */
+.hero-photo-wrap {
+  position: relative;
+  z-index: 1;
+  align-self: flex-end;
+  flex-shrink: 0;
+}
+
+.hero-photo {
+  width: 280px;
+  height: 340px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-radius: 16px 16px 0 0;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.2);
+}
+
+/* polaroid-style sticker */
+.photo-sticker {
+  position: absolute;
+  bottom: 20px;
+  left: -24px;
+  background: var(--yellow);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  transform: rotate(-3deg);
+  white-space: nowrap;
+}
+
+
+
+/* ─── CONTENT ─── */
+.about-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 64px 32px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+/* ─── ORIGIN STORY ─── */
+.origin-section { grid-column: 1 / -1; }
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--crimson);
+  margin-bottom: 16px;
+}
+.section-label::before { content:''; display:block; width:24px; height:2px; background:var(--crimson); }
+
+.section-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(36px, 5vw, 56px);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 0.92;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.section-title em { color: var(--crimson); font-style: normal; }
+
+.body-text {
+  font-family: 'Unica One', sans-serif;
+  font-size: 15px;
+  color: #444;
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+
+.body-text strong { color: var(--text); font-weight: 400; }
+
+/* highlight quote */
+.pull-quote {
+  border-left: 4px solid var(--pink);
+  padding: 12px 20px;
+  margin: 24px 0;
+  background: rgba(255,121,192,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote-text {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--crimson);
+  line-height: 1.15;
+}
+
+/* ─── STATS COLUMN ─── */
+.stats-section { }
+
+.stat-card {
+  background: var(--cream);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255,140,66,0.15);
+  transition: transform 0.15s;
+}
+.stat-card:hover { transform: translateY(-2px); }
+
+.stat-num {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 1;
+  color: var(--orange);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-family: 'Unica One', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+/* ─── FAVE FLAVOR CARD ─── */
+.fave-card {
+  background: var(--crimson);
+  border-radius: 14px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.fave-card::before {
+  content: '★';
+  position: absolute;
+  right: -10px; top: -16px;
+  font-size: 100px;
+  color: rgba(255,255,255,0.07);
+  line-height: 1;
+}
+
+.fave-eyebrow {
+  font-family: 'Unica One', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pink);
+  margin-bottom: 8px;
+}
+
+.fave-flavor {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.fave-place {
+  font-family: 'Unica One', sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+}
+
+/* ─── RATING SYSTEM EXPLAINER ─── */
+.rating-section { grid-column: 1 / -1; }
+
+.rating-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.rating-item {
+  background: var(--white);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 12px;
+  padding: 16px 14px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.rating-item:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+
+.rating-icon { font-size: 28px; margin-bottom: 8px; }
+
+.rating-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+.rating-desc {
+  font-family: 'Unica One', sans-serif;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.rating-score {
+  display: inline-block;
+  margin-top: 8px;
+  background: var(--cream);
+  border-radius: 50px;
+  padding: 2px 10px;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  color: var(--orange);
+}
+
+/* ─── LOCATION CARD ─── */
+.location-card {
+  grid-column: 1 / -1;
+  background: var(--green);
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.location-card::before {
+  content: '📍';
+  position: absolute;
+  right: 20px;
+  font-size: 80px;
+  opacity: 0.12;
+}
+
+.location-emoji { font-size: 36px; flex-shrink: 0; }
+
+.location-text-wrap { flex: 1; }
+
+.location-label {
+  font-family: 'Unica One', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 4px;
+}
+
+.location-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: white;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.location-desc {
+  font-family: 'Unica One', sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.03em;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <span class="logo-eyebrow">A sweet adventure log</span>
+    <span class="logo-text">Leah <em>Loves</em> Ice Cream</span>
+  </a>
+  <button class="menu-btn"><span></span><span></span><span></span></button>
+</header>
+
+
+
+<!-- HERO -->
+<div class="about-hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">The scoop on the scooper</div>
+    <div class="hero-title">About<em style="color:var(--pink)">Leah</em></div>
+    <div class="hero-tagline">Medford-based. Extremely opinionated. Eating ice cream every single day and not apologizing for it.</div>
+  </div>
+  <div class="hero-photo-wrap">
+    <img class="hero-photo" src="leah.jpg" alt="Leah eating ice cream">
+    <div class="photo-sticker">🍦 In her element</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="about-content">
+
+  <!-- ORIGIN STORY -->
+  <div class="origin-section">
+    <div class="section-label">The origin story</div>
+    <div class="section-title">It Started as a <em>Bracket</em></div>
+    <p class="body-text">For years, Leah had one dream: a definitive New England ice cream bracket. Every shop, head-to-head, until one supreme champion emerged. The problem? A bracket means going <strong>back</strong> — and when there are this many new places to try, who has time to go back?</p>
+    <div class="pull-quote">
+      <div class="pull-quote-text">"We just want to try new ones."</div>
+    </div>
+    <p class="body-text">So instead of a bracket, we built this — a living, breathing map of every ice cream spot Leah has ever rated, reviewed, and strong-opinioned about. Ice cream isn't just her favorite food. It's a daily ritual, a travel priority, and an art form she takes very seriously.</p>
+    <p class="body-text">From homemade scoops in hidden Cambridge shops to soft serve on the side of the road, if it's frozen and creamy, Leah has thoughts. Many thoughts. With a scoring system to back them up.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-section">
+    <div class="section-label">By the numbers</div>
+
+    <div class="stat-card">
+      <div class="stat-num">365</div>
+      <div class="stat-label">Days a year she would eat ice cream if given the chance (she is given the chance)</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Categories scored per visit — taste, texture, mix-ins, bang for your buck, and flavor selection</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Opinions held, freely shared, and absolutely not up for debate</div>
+    </div>
+
+    <div class="fave-card">
+      <div class="fave-eyebrow">🏆 All-time favorite flavor</div>
+      <div class="fave-flavor">Salted Caramel Crackle</div>
+      <div class="fave-place">📍 Honeycomb Creamery, Cambridge MA</div>
+    </div>
+  </div>
+
+  <!-- HOW RATINGS WORK -->
+  <div class="rating-section">
+    <div class="section-label">How ratings work</div>
+    <div class="section-title">The <em>Science</em> of the Scoop</div>
+    <p class="body-text">Every visit is rated across five categories on a 1–10 scale. The combined average becomes a star rating out of 5 — with decimals, because some places deserve a 4.3 and not a 4.</p>
+    <div class="rating-grid">
+      <div class="rating-item">
+        <div class="rating-icon">👅</div>
+        <div class="rating-name">Taste</div>
+        <div class="rating-desc">The obvious one. Does it taste amazing?</div>
+        <div class="rating-score">/ 10</div>
+      </div>
+      <div class="rating-item">
+        <div class="rating-icon">✋</div>
+        <div class="rating-name">Texture</div>
+        <div class="rating-desc">Creamy, icy, dense — it all matters.</div>
+        <div class="rating-score">/ 10</div>
+      </div>
+      <div class="rating-item">
+        <div class="rating-icon">🍫</div>
+        <div class="rating-name">Mix-ins</div>
+        <div class="rating-desc">Quality and integration of add-ins.</div>
+        <div class="rating-score">/ 10</div>
+      </div>
+      <div class="rating-item">
+        <div class="rating-icon">💰</div>
+        <div class="rating-name">Bang for Buck</div>
+        <div class="rating-desc">Was it worth the price?</div>
+        <div class="rating-score">/ 10</div>
+      </div>
+      <div class="rating-item">
+        <div class="rating-icon">🧁</div>
+        <div class="rating-name">Other Flavors</div>
+        <div class="rating-desc">How exciting is the rest of the menu?</div>
+        <div class="rating-score">/ 10</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCATION -->
+  <div class="location-card">
+    <div class="location-emoji">🗺️</div>
+    <div class="location-text-wrap">
+      <div class="location-label">Home base</div>
+      <div class="location-name">Medford, Massachusetts</div>
+      <div class="location-desc">Covering greater Boston and beyond — New England is the mission, but no good scoop goes unrated wherever she travels.</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side Quests — Leah Loves Ice Cream</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Unica+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:    #FF79C0;
+  --crimson: #B02050;
+  --orange:  #FF8C42;
+  --yellow:  #FFD84A;
+  --blue:    #5BC8F5;
+  --green:   #2A7A3B;
+  --cream:   #FFFBE0;
+  --white:   #FFFFFF;
+  --text:    #111111;
+  --muted:   #777;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { font-family:'Unica One', sans-serif; background: var(--white); color:var(--text); min-height:100vh; }
+
+/* ─── HEADER (matches main site) ─── */
+header {
+  background: var(--crimson);
+  padding: 14px 32px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+  box-shadow: 0 4px 24px rgba(176,32,80,0.3);
+  z-index: 30;
+}
+header::before { content:'🍦'; position:absolute; right:-10px; top:-18px; font-size:130px; opacity:0.1; pointer-events:none; }
+header::after { content:''; position:absolute; top:0; right:160px; width:3px; height:100%; background:rgba(255,121,192,0.25); transform:skewX(-12deg); pointer-events:none; }
+
+.logo { display:flex; flex-direction:column; gap:2px; position:relative; z-index:1; text-decoration:none; }
+.logo-eyebrow { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--pink); opacity:0.85; }
+.logo-text { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:clamp(28px,3.2vw,44px); color:var(--white); text-transform:uppercase; letter-spacing:0.03em; line-height:0.95; }
+.logo-text em { color:var(--pink); font-style:normal; }
+
+.menu-btn { width:40px; height:40px; border-radius:8px; background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,121,192,0.35); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; }
+.menu-btn span { display:block; width:18px; height:2px; background:white; border-radius:2px; }
+
+/* ─── PAGE HERO ─── */
+.page-hero {
+  background: var(--crimson);
+  padding: 48px 40px 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 80% 50%, rgba(255,121,192,0.2) 0%, transparent 60%),
+    radial-gradient(circle at 10% 80%, rgba(176,32,80,0.4) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 1; max-width: 800px; }
+
+.hero-eyebrow {
+  font-family: 'Unica One', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pink);
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(56px, 9vw, 110px);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: white;
+  line-height: 0.88;
+  margin-bottom: 18px;
+}
+
+.hero-title em {
+  color: var(--pink);
+  font-style: normal;
+  display: block;
+}
+
+.hero-desc {
+  font-family: 'Unica One', sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+
+
+/* ─── MAIN CONTENT ─── */
+.page-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 56px 32px 80px;
+}
+
+/* ─── FEATURED POST (big hero card) ─── */
+.featured-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--crimson);
+  margin-bottom: 20px;
+}
+
+.featured-label::before {
+  content: '';
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--crimson);
+}
+
+.featured-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+  margin-bottom: 56px;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+}
+.featured-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(0,0,0,0.14); }
+
+.featured-img {
+  background: linear-gradient(135deg, #FFD84A 0%, #FF8C42 50%, #FF6B00 100%);
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, transparent 60%, rgba(255,255,255,0.08));
+}
+
+.img-pattern {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.featured-body {
+  background: var(--white);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-left: none;
+}
+
+.post-category {
+  display: inline-block;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 4px 12px;
+  border-radius: 50px;
+  margin-bottom: 16px;
+}
+
+.cat-adventure { background: rgba(91,200,245,0.15); color: #1A7AAF; }
+.cat-diy       { background: rgba(255,140,66,0.15); color: #CC5500; }
+.cat-review    { background: rgba(176,32,80,0.12);  color: var(--crimson); }
+
+.featured-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 0.95;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.featured-excerpt {
+  font-family: 'Unica One', sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Unica One', sans-serif;
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 24px;
+}
+
+.meta-dot { width:4px; height:4px; border-radius:50%; background:#ddd; }
+
+.read-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--crimson);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.12s;
+  align-self: flex-start;
+}
+.read-btn:hover { background: var(--pink); transform: translateY(-1px); }
+.read-btn .arrow { transition: transform 0.15s; }
+.read-btn:hover .arrow { transform: translateX(3px); }
+
+/* ─── POST GRID ─── */
+.grid-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.grid-label::before { content:''; display:block; width:24px; height:2px; background:var(--muted); }
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.post-card {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  border: 1px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+  background: white;
+}
+.post-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
+
+.post-card-img {
+  height: 160px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.post-card-img .img-pattern { opacity: 0.5; }
+
+.post-card-body { padding: 20px 22px 24px; }
+
+.post-card-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.0;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.post-card-excerpt {
+  font-family: 'Unica One', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.post-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-card-meta {
+  font-family: 'Unica One', sans-serif;
+  font-size: 11px;
+  color: #bbb;
+}
+
+.post-card-arrow {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  color: var(--orange);
+  transition: background 0.15s, transform 0.15s;
+}
+.post-card:hover .post-card-arrow { background: var(--orange); color: white; transform: translateX(2px); }
+
+/* ─── SUBSTACK CTA ─── */
+.substack-cta {
+  margin-top: 56px;
+  background: var(--cream);
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  border: 1px solid rgba(255,140,66,0.2);
+}
+
+.cta-left { flex: 1; }
+
+.cta-eyebrow {
+  font-family: 'Unica One', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+
+.cta-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  line-height: 1.0;
+  margin-bottom: 8px;
+}
+
+.cta-sub {
+  font-family: 'Unica One', sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.cta-btn {
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 28px;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(255,140,66,0.3);
+  transition: all 0.15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.cta-btn:hover { background: #FF6B00; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,107,0,0.35); }
+
+/* ─── SUBSTACK NOTE ─── */
+.substack-note {
+  text-align: center;
+  margin-top: 16px;
+  font-family: 'Unica One', sans-serif;
+  font-size: 11px;
+  color: #bbb;
+  letter-spacing: 0.04em;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <span class="logo-eyebrow">A sweet adventure log</span>
+    <span class="logo-text">Leah <em>Loves</em> Ice Cream</span>
+  </a>
+  <button class="menu-btn">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Leah's blog</div>
+    <div class="hero-title">Side<em style="color:var(--pink)">Quests</em></div>
+    <div class="hero-desc">Adventures beyond the map pin. Stories, recipes, deep dives, and dispatches from a life spent chasing the perfect scoop.</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="page-content">
+
+  <!-- FEATURED -->
+  <div class="featured-label">Latest post</div>
+  <div class="featured-card">
+    <div class="featured-img">
+      <div class="img-pattern"></div>
+      🍨
+    </div>
+    <div class="featured-body">
+      <span class="post-category cat-adventure">Adventure</span>
+      <div class="featured-title">Gelato Adventures in Italy</div>
+      <div class="post-meta">
+        <span>May 20, 2026</span>
+        <div class="meta-dot"></div>
+        <span>6 min read</span>
+      </div>
+      <div class="featured-excerpt">I went to Italy for the art. I stayed for the gelato. Here's everything I learned about what makes real Italian gelato different — and the 7 spots in Florence that completely ruined American ice cream for me forever.</div>
+      <a class="read-btn" href="#">Read on Substack <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid-label">More posts</div>
+  <div class="post-grid">
+
+    <div class="post-card">
+      <div class="post-card-img" style="background: linear-gradient(135deg, #FF79C0, #B02050)">
+        <div class="img-pattern"></div>
+        🍦
+      </div>
+      <div class="post-card-body">
+        <span class="post-category cat-diy">DIY</span>
+        <div class="post-card-title">Homemade Ice Cream at Home</div>
+        <div class="post-card-excerpt">You don't need a fancy machine. Here's my foolproof method for making creamy, scoopable ice cream with just a freezer and a whisk.</div>
+        <div class="post-card-footer">
+          <div class="post-card-meta">April 8, 2026 · 4 min read</div>
+          <div class="post-card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-card" style="opacity:0.45; pointer-events:none;">
+      <div class="post-card-img" style="background: linear-gradient(135deg, #FFD84A, #FF8C42)">
+        <div class="img-pattern"></div>
+        🍧
+      </div>
+      <div class="post-card-body">
+        <span class="post-category cat-review">Coming Soon</span>
+        <div class="post-card-title">Your Next Post Here</div>
+        <div class="post-card-excerpt">Every time you publish on Substack, it will automatically appear here on the site.</div>
+        <div class="post-card-footer">
+          <div class="post-card-meta">Pulled live from Substack</div>
+          <div class="post-card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUBSTACK CTA -->
+  <div class="substack-cta">
+    <div class="cta-left">
+      <div class="cta-eyebrow">Never miss a scoop</div>
+      <div class="cta-title">Get posts in your inbox</div>
+      <div class="cta-sub">Subscribe on Substack and get new Side Quests delivered straight to you — free, always.</div>
+    </div>
+    <a class="cta-btn" href="#">Subscribe free →</a>
+  </div>
+  <div class="substack-note">Powered by Substack · Free to read, free to subscribe</div>
+
+</div>
+
+</body>
+</html>
