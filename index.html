@@ -365,6 +365,142 @@ header::after {
     max-height: 75vh;
   }
 }
+
+/* ─── FILTER BAR ─── */
+.filter-bar {
+  position: absolute;
+  top: 12px; left: 12px; right: 12px;
+  display: flex; gap: 8px; align-items: center;
+  z-index: 15;
+}
+
+.filter-search-box {
+  flex: 1;
+  display: flex; align-items: center; gap: 8px;
+  background: white; border-radius: 10px;
+  padding: 8px 12px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.14);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.filter-search-box input {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: 'Unica One', sans-serif; font-size: 13px; color: var(--text);
+}
+.filter-search-box input::placeholder { color: #bbb; }
+.filter-search-icon { font-size: 13px; flex-shrink: 0; color: #aaa; }
+
+.filter-icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: white; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.14);
+  flex-shrink: 0;
+  transition: background 0.15s;
+  position: relative;
+}
+.filter-icon-btn.active { background: var(--crimson); }
+.filter-icon-btn.active svg path,
+.filter-icon-btn.active svg rect { stroke: white; }
+.filter-icon-btn .badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 16px; height: 16px;
+  background: var(--orange); border-radius: 50%;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 10px; color: white;
+  display: flex; align-items: center; justify-content: center;
+  display: none;
+}
+.filter-icon-btn .badge.show { display: flex; }
+
+/* ─── FILTER DROPDOWN ─── */
+.filter-dropdown {
+  position: absolute;
+  top: 58px; left: 12px; right: 12px;
+  background: white;
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.14);
+  z-index: 14;
+  display: none;
+}
+.filter-dropdown.open { display: block; }
+
+.filter-dropdown-section {
+  margin-bottom: 12px;
+}
+.filter-dropdown-label {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--muted); margin-bottom: 7px;
+}
+.filter-chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.filter-chip {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 5px 12px; border-radius: 50px;
+  border: 2px solid rgba(0,0,0,0.1);
+  background: white; color: var(--muted);
+  cursor: pointer; white-space: nowrap;
+  transition: all 0.15s;
+}
+.filter-chip.on { border-color: transparent; color: white; }
+.filter-chip.on-orange { background: var(--orange); border-color: var(--orange); color: white; }
+.filter-chip.on-blue   { background: var(--blue);   border-color: var(--blue);   color: white; }
+.filter-chip.on-yellow { background: var(--yellow); border-color: var(--yellow); color: #111; }
+.filter-chip.on-green  { background: var(--green);  border-color: var(--green);  color: white; }
+
+.filter-divider { height: 1px; background: #f2f2f2; margin: 10px 0; }
+
+.filter-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.filter-toggle-label {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--text); display: flex; align-items: center; gap: 7px;
+}
+.toggle-pill {
+  width: 44px; height: 26px; border-radius: 13px;
+  background: #e0e0e0; position: relative;
+  cursor: pointer; border: none; transition: background 0.2s;
+  flex-shrink: 0;
+}
+.toggle-pill.on { background: var(--crimson); }
+.toggle-pill::after {
+  content: ''; position: absolute;
+  width: 20px; height: 20px; background: white;
+  border-radius: 50%; top: 3px; left: 3px;
+  transition: left 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle-pill.on::after { left: 21px; }
+
+.filter-clear-btn {
+  width: 100%; margin-top: 10px;
+  background: none; border: 1.5px solid rgba(0,0,0,0.1);
+  border-radius: 8px; padding: 8px;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-clear-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+
+/* search highlight */
+.pin-hidden { opacity: 0.15 !important; pointer-events: none; }
+
+@media (max-width: 600px) {
+  .filter-bar { top: 10px; left: 10px; right: 10px; gap: 6px; }
+  .filter-search-box { padding: 7px 10px; }
+  .filter-icon-btn { width: 34px; height: 34px; }
+  .filter-dropdown { top: 54px; left: 10px; right: 10px; }
+}
 </style>
 </head>
 <body>
@@ -394,6 +530,47 @@ header::after {
   <!-- MAP SECTION -->
   <div class="map-section">
     <div id="map"></div>
+
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-search-box">
+        <span class="filter-search-icon">🔍</span>
+        <input type="text" id="filterSearch" placeholder="Search ice cream spots..." oninput="applyFilters()">
+      </div>
+      <button class="filter-icon-btn" id="filterBtn" onclick="toggleFilterDropdown(event)">
+        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1h16M4 6h10M7 11h4" stroke="#555" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="badge" id="filterBadge">0</div>
+      </button>
+    </div>
+
+    <!-- FILTER DROPDOWN -->
+    <div class="filter-dropdown" id="filterDropdown">
+      <div class="filter-dropdown-section">
+        <div class="filter-dropdown-label">Type</div>
+        <div class="filter-chip-row">
+          <div class="filter-chip" data-filter="type" data-value="homemade" onclick="toggleChip(this,'on-orange')">🧡 Homemade</div>
+          <div class="filter-chip" data-filter="type" data-value="soft serve" onclick="toggleChip(this,'on-blue')">🩵 Soft Serve</div>
+          <div class="filter-chip" data-filter="type" data-value="big" onclick="toggleChip(this,'on-yellow')">🟡 Big Chain</div>
+        </div>
+      </div>
+      <div class="filter-dropdown-section">
+        <div class="filter-dropdown-label">Min Rating</div>
+        <div class="filter-chip-row">
+          <div class="filter-chip" data-filter="rating" data-value="4" onclick="toggleRating(this)">⭐ 4+ Stars</div>
+          <div class="filter-chip" data-filter="rating" data-value="3" onclick="toggleRating(this)">⭐ 3+ Stars</div>
+          <div class="filter-chip" data-filter="rating" data-value="0" onclick="toggleRating(this)">All</div>
+        </div>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-toggle-row">
+        <span class="filter-toggle-label">📍 Show Wishlist</span>
+        <button class="toggle-pill" id="wishlistToggle" onclick="toggleWishlist()"></button>
+      </div>
+      <button class="filter-clear-btn" onclick="clearFilters()">Clear All Filters</button>
+    </div>
 
     <!-- loading -->
     <div class="map-loading" id="mapLoading">
@@ -860,6 +1037,9 @@ async function initMap() {
     await new Promise(r => setTimeout(r, 120));
   }
 
+  // Hide wishlist markers by default
+  wishlistMarkers.forEach(m => m.map = null);
+
   // Set up marker clustering
   if (window.markerClusterer) {
     // Rated spots clusterer - orange style
@@ -977,6 +1157,119 @@ function buildTop10Carousel(spots) {
 
   window.addEventListener('resize', build);
   build();
+}
+
+
+// ── FILTER STATE ──
+const filterState = {
+  types: new Set(),      // empty = show all
+  minRating: 0,
+  showWishlist: false,   // default OFF
+  search: ''
+};
+
+function toggleFilterDropdown(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('filterDropdown');
+  const btn = document.getElementById('filterBtn');
+  dd.classList.toggle('open');
+  btn.classList.toggle('active');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.filter-bar') && !e.target.closest('.filter-dropdown')) {
+    document.getElementById('filterDropdown').classList.remove('open');
+    document.getElementById('filterBtn').classList.remove('active');
+  }
+});
+
+function toggleChip(chip, activeClass) {
+  const val = chip.dataset.value;
+  if (filterState.types.has(val)) {
+    filterState.types.delete(val);
+    chip.classList.remove(activeClass);
+  } else {
+    filterState.types.add(val);
+    chip.classList.add(activeClass);
+  }
+  updateBadge();
+  applyFilters();
+}
+
+function toggleRating(chip) {
+  document.querySelectorAll('[data-filter="rating"]').forEach(c => c.classList.remove('on-green'));
+  chip.classList.add('on-green');
+  filterState.minRating = parseFloat(chip.dataset.value);
+  updateBadge();
+  applyFilters();
+}
+
+function toggleWishlist() {
+  filterState.showWishlist = !filterState.showWishlist;
+  const pill = document.getElementById('wishlistToggle');
+  pill.classList.toggle('on', filterState.showWishlist);
+
+  // show/hide wishlist markers
+  wishlistMarkers.forEach(m => {
+    m.map = filterState.showWishlist ? map : null;
+  });
+  if (wishlistClusterer) {
+    wishlistClusterer.clearMarkers();
+    if (filterState.showWishlist) {
+      wishlistClusterer.addMarkers(wishlistMarkers);
+    }
+  }
+  updateBadge();
+}
+
+function updateBadge() {
+  let count = filterState.types.size + (filterState.minRating > 0 ? 1 : 0) + (filterState.showWishlist ? 1 : 0);
+  const badge = document.getElementById('filterBadge');
+  badge.textContent = count;
+  badge.classList.toggle('show', count > 0);
+}
+
+function applyFilters() {
+  filterState.search = document.getElementById('filterSearch').value.toLowerCase().trim();
+
+  allSpots.forEach((spot, i) => {
+    const marker = markers[i];
+    if (!marker) return;
+
+    const typeMatch = filterState.types.size === 0 ||
+      [...filterState.types].some(t => spot.type.toLowerCase().includes(t));
+    const ratingMatch = spot.stars >= filterState.minRating;
+    const searchMatch = !filterState.search ||
+      spot.name.toLowerCase().includes(filterState.search) ||
+      spot.address.toLowerCase().includes(filterState.search);
+
+    const visible = typeMatch && ratingMatch && searchMatch;
+    marker.map = visible ? map : null;
+  });
+
+  // rebuild clusterer with visible markers
+  if (clusterer) {
+    clusterer.clearMarkers();
+    const visible = markers.filter(m => m.map === map);
+    clusterer.addMarkers(visible);
+  }
+}
+
+function clearFilters() {
+  filterState.types.clear();
+  filterState.minRating = 0;
+  filterState.search = '';
+  document.getElementById('filterSearch').value = '';
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    c.className = 'filter-chip';
+  });
+  // turn off wishlist
+  filterState.showWishlist = false;
+  document.getElementById('wishlistToggle').classList.remove('on');
+  wishlistMarkers.forEach(m => m.map = null);
+  if (wishlistClusterer) { wishlistClusterer.clearMarkers(); }
+  updateBadge();
+  applyFilters();
 }
 
 // ── nav helpers ──
