@@ -90,7 +90,7 @@ header::after {
 
 /* ─── LEGEND ─── */
 .legend {
-  position:absolute; bottom:70px; left:16px;
+  position:absolute; bottom:24px; left:16px;
   background:white; border-radius:12px;
   box-shadow:0 4px 18px rgba(0,0,0,0.12);
   border:1px solid rgba(0,0,0,0.07);
@@ -103,7 +103,7 @@ header::after {
 
 /* ─── COUNTER ─── */
 .counter {
-  position:absolute; bottom:70px; right:16px;
+  position:absolute; bottom:24px; right:16px;
   background:#FF6B00; border-radius:12px;
   box-shadow:0 6px 20px rgba(255,107,0,0.28);
   padding:12px 20px; z-index:10; text-align:center; color:white;
@@ -1037,8 +1037,8 @@ async function initMap() {
     await new Promise(r => setTimeout(r, 120));
   }
 
-  // Hide wishlist markers by default
-  wishlistMarkers.forEach(m => m.map = null);
+  // Hide wishlist markers by default (wishlist toggle is OFF)
+  wishlistMarkers.forEach(m => { m.map = null; });
 
   // Set up marker clustering
   if (window.markerClusterer) {
@@ -1067,10 +1067,10 @@ async function initMap() {
       }
     });
 
-    // Wishlist spots clusterer - crimson dashed style
+    // Wishlist spots clusterer - crimson dashed style (starts empty, toggle adds them)
     wishlistClusterer = new markerClusterer.MarkerClusterer({
       map,
-      markers: wishlistMarkers,
+      markers: [],
       renderer: {
         render: ({ count, position }) => {
           const div = document.createElement('div');
