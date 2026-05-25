@@ -103,13 +103,15 @@ header::after {
 
 /* ─── COUNTER ─── */
 .counter {
-  position:absolute; bottom:24px; right:16px;
-  background:#FF6B00; border-radius:12px;
+  position:absolute; bottom:60px; left:50%; transform:translateX(-50%);
+  background:#FF6B00; border-radius:50px;
   box-shadow:0 6px 20px rgba(255,107,0,0.28);
-  padding:12px 20px; z-index:10; text-align:center; color:white;
+  padding:8px 20px; z-index:10;
+  display:flex; align-items:center; gap:10px;
+  white-space:nowrap;
 }
-.counter-num { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:40px; line-height:1; color:#FFD84A; }
-.counter-label { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.8; margin-top:3px; }
+.counter-num { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:22px; line-height:1; color:#FFD84A; }
+.counter-label { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.9; margin-top:0; color:white; }
 
 /* ─── SCROLL HINT ─── */
 .scroll-hint { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:5px; z-index:10; cursor:pointer; opacity:0.8; transition:opacity 0.15s; }
@@ -266,13 +268,7 @@ header::after {
   .legend-item { font-size: 10px; margin-bottom: 3px; }
   .ldot { width: 10px; height: 10px; }
 
-  .counter {
-    bottom: 24px;
-    top: auto;
-    right: 12px;
-    padding: 8px 14px;
-  }
-  .counter-num { font-size: 28px; }
+  .counter-num { font-size: 20px; }
   .counter-label { font-size: 9px; }
 
   .scroll-hint { bottom: 8px; }
