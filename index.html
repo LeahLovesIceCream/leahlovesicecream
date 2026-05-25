@@ -547,7 +547,7 @@ const SCORE_LABELS = [
   { key:'desirability', label:'Other Flavors',            icon:'🧁' }
 ];
 
-let map, allSpots = [], wishlistSpots = [], markers = [];
+let map, allSpots = [], wishlistSpots = [], markers = [], wishlistMarkers = [], clusterer, wishlistClusterer;
 
 
 // ── fetch wishlist data ──
@@ -650,7 +650,7 @@ function placeWishlistMarker(spot, position) {
     showWishlistPopup(spot, { x: e.clientX, y: e.clientY });
   });
 
-  markers.push(overlay);
+  wishlistMarkers.push(overlay);
 }
 
 // ── fetch sheet data ──
@@ -860,6 +860,59 @@ async function initMap() {
     await new Promise(r => setTimeout(r, 120));
   }
 
+  // Set up marker clustering
+  if (window.markerClusterer) {
+    // Rated spots clusterer - orange style
+    clusterer = new markerClusterer.MarkerClusterer({
+      map,
+      markers,
+      renderer: {
+        render: ({ count, position }) => {
+          const div = document.createElement('div');
+          div.style.cssText = `
+            background: #FF6B00;
+            color: white;
+            border-radius: 50%;
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Big Shoulders Display', sans-serif;
+            font-weight: 900; font-size: 16px;
+            border: 3px solid white;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            cursor: pointer;
+          `;
+          div.textContent = count;
+          return new google.maps.marker.AdvancedMarkerElement({ position, content: div });
+        }
+      }
+    });
+
+    // Wishlist spots clusterer - crimson dashed style
+    wishlistClusterer = new markerClusterer.MarkerClusterer({
+      map,
+      markers: wishlistMarkers,
+      renderer: {
+        render: ({ count, position }) => {
+          const div = document.createElement('div');
+          div.style.cssText = `
+            background: white;
+            color: #B02050;
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Big Shoulders Display', sans-serif;
+            font-weight: 900; font-size: 15px;
+            border: 3px dashed #B02050;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+            cursor: pointer;
+          `;
+          div.textContent = count;
+          return new google.maps.marker.AdvancedMarkerElement({ position, content: div });
+        }
+      }
+    });
+  }
+
   buildTop10Carousel(spots);
 }
 
@@ -942,6 +995,7 @@ function scrollToTop10() {
 document.addEventListener('click', e => { if (!e.target.closest('.menu-btn') && !e.target.closest('.nav-menu')) closeMenu(); });
 </script>
 
+<script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 <script async
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGgZg3qjsf7vojo47ryZ4fw28lauvKgB0&callback=initMap&loading=async">
 </script>
