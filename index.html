@@ -1,4 +1,4 @@
-AIzaSyDGgZg3qjsf7vojo47ryZ4fw28lauvKgB0<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -150,8 +150,26 @@ header::after {
   opacity:0; pointer-events:none;
   transform:scale(0.93) translateY(8px);
   transition:opacity 0.18s,transform 0.2s cubic-bezier(.34,1.56,.64,1);
+  max-height:85vh;
+  overflow-y:auto;
 }
 .popup-card.visible { opacity:1; pointer-events:all; transform:scale(1) translateY(0); }
+
+@media (max-width: 600px) {
+  .popup-card {
+    width: calc(100vw - 24px);
+    left: 12px !important;
+    right: 12px;
+    top: auto !important;
+    bottom: 12px;
+    transform: scale(0.93) translateY(20px);
+    border-radius: 20px;
+    max-height: 75vh;
+  }
+  .popup-card.visible {
+    transform: scale(1) translateY(0);
+  }
+}
 
 .popup-stripe { height:5px; width:100%; }
 
@@ -232,6 +250,47 @@ header::after {
 .carousel-dots { display:flex; justify-content:center; gap:7px; margin-top:16px; position:relative; z-index:2; }
 .cdot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.3); transition:all 0.2s; cursor:pointer; }
 .cdot.active { background:#5BC8F5; width:22px; border-radius:4px; }
+
+@media (max-width: 600px) {
+  header { padding: 10px 16px 8px; }
+  .logo-text { font-size: 26px; }
+  .logo-eyebrow { font-size: 9px; }
+
+  .legend {
+    bottom: auto;
+    top: 12px;
+    left: 12px;
+    padding: 8px 12px;
+  }
+  .legend-title { font-size: 10px; margin-bottom: 5px; }
+  .legend-item { font-size: 10px; margin-bottom: 3px; }
+  .ldot { width: 10px; height: 10px; }
+
+  .counter {
+    bottom: auto;
+    top: 12px;
+    right: 12px;
+    padding: 8px 14px;
+  }
+  .counter-num { font-size: 28px; }
+  .counter-label { font-size: 9px; }
+
+  .scroll-hint { bottom: 8px; }
+  .scroll-hint-label { font-size: 10px; }
+
+  .top10-title { font-size: 42px; }
+  .top10-header { padding: 0 16px; margin-bottom: 20px; }
+
+  .carousel-track { padding: 6px 16px; gap: 12px; }
+  .top10-card { width: 200px; }
+  .card-top { height: 80px; }
+  .card-emoji { font-size: 32px; }
+  .card-rank { font-size: 60px; }
+  .card-name { font-size: 14px; }
+  .card-body { padding: 10px 12px 12px; }
+
+  .nav-menu { right: 16px; }
+}
 </style>
 </head>
 <body>
@@ -407,7 +466,7 @@ async function loadSheetData() {
       const bang    = getNum(COL.bang);
       const desir   = getNum(COL.desirability);
       const avg     = (taste + texture + mixins + bang + desir) / 5;
-      const stars   = Math.round(avg / 2 * 2) / 2; // nearest 0.5, out of 5
+      const stars   = Math.round(avg / 2 * 2) / 2; // nearest 0.5, out of 5 (avg is /10)
 
       const rawVibes   = get(COL.vibe);
       const rawBonuses = get(COL.bonuses);
@@ -420,7 +479,7 @@ async function loadSheetData() {
         flavor:   get(COL.flavor),
         taste, texture, mixins, bang, desirability: desir,
         stars,
-        rating:   Math.round(avg / 2 * 10) / 10,
+        rating:   Math.round(avg / 2 * 10) / 10, // display rating out of 5
         vibes:    parseMultiSelect(rawVibes),
         bonuses:  parseMultiSelect(rawBonuses),
         comments: get(COL.comments),
@@ -499,15 +558,18 @@ function showPopup(spot, position) {
     ? spot.bonuses.map(b => `<span class="bonus-tag">${b}</span>`).join('')
     : '<span style="font-family:Unica One,sans-serif;font-size:12px;color:#aaa">None noted</span>';
 
-  // position near click, keep on screen
+  // on mobile, card is positioned via CSS (bottom sheet)
+  // on desktop, position near click
   const W = window.innerWidth, H = window.innerHeight;
-  const cardW = 300, cardH = 480;
-  let x = position.x + 16, y = position.y - cardH / 2;
-  if (x + cardW > W - 10) x = position.x - cardW - 16;
-  if (y < 10) y = 10;
-  if (y + cardH > H - 10) y = H - cardH - 10;
-  card.style.left = x + 'px';
-  card.style.top  = y + 'px';
+  if (W > 600) {
+    const cardW = 300, cardH = 480;
+    let x = position.x + 16, y = position.y - cardH / 2;
+    if (x + cardW > W - 10) x = position.x - cardW - 16;
+    if (y < 10) y = 10;
+    if (y + cardH > H - 10) y = H - cardH - 10;
+    card.style.left = x + 'px';
+    card.style.top  = y + 'px';
+  }
   card.classList.add('visible');
 }
 
@@ -560,8 +622,8 @@ async function initMap() {
   await google.maps.importLibrary('marker');
 
   map = new Map(document.getElementById('map'), {
-    center: { lat: 39.5, lng: -98.35 },
-    zoom: 4,
+    center: { lat: 42.4184, lng: -71.1062 },
+    zoom: 11,
     mapId: 'leah_ice_cream_map',
     disableDefaultUI: false,
     zoomControl: true,
