@@ -103,15 +103,22 @@ header::after {
 
 /* ─── COUNTER ─── */
 .counter {
-  position:absolute; bottom:60px; left:50%; transform:translateX(-50%);
+  position:absolute; bottom:20px; left:50%; transform:translateX(-50%);
   background:#FF6B00; border-radius:50px;
-  box-shadow:0 6px 20px rgba(255,107,0,0.28);
-  padding:8px 20px; z-index:10;
+  box-shadow:0 6px 20px rgba(255,107,0,0.35);
+  padding:10px 22px; z-index:10;
   display:flex; align-items:center; gap:10px;
-  white-space:nowrap;
+  white-space:nowrap; cursor:pointer;
+  transition:transform 0.15s, box-shadow 0.15s;
+  border:none; text-decoration:none;
 }
+.counter:hover { transform:translateX(-50%) translateY(-2px); box-shadow:0 10px 28px rgba(255,107,0,0.4); }
 .counter-num { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:22px; line-height:1; color:#FFD84A; }
-.counter-label { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.9; margin-top:0; color:white; }
+.counter-label { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:white; opacity:0.9; }
+.counter-divider { width:1.5px; height:20px; background:rgba(255,255,255,0.25); border-radius:2px; }
+.counter-cta { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:14px; text-transform:uppercase; letter-spacing:0.06em; color:white; display:flex; align-items:center; gap:5px; }
+.counter-arrow { font-size:12px; animation:bounce 1.8s ease-in-out infinite; display:inline-block; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
 
 /* ─── SCROLL HINT ─── */
 .scroll-hint { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:5px; z-index:10; cursor:pointer; opacity:0.8; transition:opacity 0.15s; }
@@ -584,16 +591,12 @@ header::after {
         <div class="legend-item"><div class="ldot" style="background:white;border:2px dashed #B02050"></div>Wishlist</div>
     </div>
 
-    <!-- counter -->
-    <div class="counter" id="spotCounter">
-      <div class="counter-num" id="counterNum">—</div>
-      <div class="counter-label">Scoops Rated</div>
-    </div>
-
-    <!-- scroll hint -->
-    <div class="scroll-hint" onclick="scrollToTop10()">
-      <div class="scroll-hint-label">Top 10 List ↓</div>
-      <div class="scroll-arrow">↓</div>
+    <!-- COMBINED COUNTER + SCROLL CTA -->
+    <div class="counter" onclick="scrollToTop10()">
+      <span class="counter-num" id="counterNum">—</span>
+      <span class="counter-label">Scoops Rated</span>
+      <div class="counter-divider"></div>
+      <span class="counter-cta">Top 10 <span class="counter-arrow">↓</span></span>
     </div>
   </div>
 
