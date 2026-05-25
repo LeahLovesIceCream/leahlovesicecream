@@ -291,6 +291,80 @@ header::after {
 
   .nav-menu { right: 16px; }
 }
+
+/* ─── WISHLIST PINS ─── */
+.gmap-pin-wishlist {
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  cursor:pointer; transform:translateY(-100%);
+  transition:transform 0.15s cubic-bezier(.34,1.56,.64,1);
+  z-index:5;
+}
+.gmap-pin-wishlist:hover { transform:translateY(-100%) scale(1.15); }
+.gmap-pin-circle-wishlist {
+  width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px;
+  background: white;
+  border: 3px dashed var(--crimson);
+  box-shadow:0 4px 14px rgba(0,0,0,0.15);
+}
+.gmap-pin-label-wishlist {
+  font-family:'Big Shoulders Display',sans-serif; font-weight:800;
+  font-size:10px; text-transform:uppercase; letter-spacing:0.06em;
+  padding:2px 7px; border-radius:4px;
+  background: white;
+  color: var(--crimson);
+  border: 1.5px dashed var(--crimson);
+  white-space:nowrap;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1); line-height:1.5;
+}
+
+/* ─── WISHLIST POPUP ─── */
+.wishlist-popup {
+  position:fixed; z-index:200;
+  width:280px;
+  background:white; border-radius:18px;
+  box-shadow:0 16px 48px rgba(0,0,0,0.16),0 2px 8px rgba(0,0,0,0.06);
+  border: 2px dashed var(--crimson);
+  overflow:hidden;
+  opacity:0; pointer-events:none;
+  transform:scale(0.93) translateY(8px);
+  transition:opacity 0.18s,transform 0.2s cubic-bezier(.34,1.56,.64,1);
+  max-height:85vh; overflow-y:auto;
+}
+.wishlist-popup.visible { opacity:1; pointer-events:all; transform:scale(1) translateY(0); }
+
+.wishlist-popup-stripe { height:5px; width:100%; background: var(--crimson); }
+.wishlist-popup-inner { padding:15px 18px 18px; }
+.wishlist-popup-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+.wishlist-popup-name { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:20px; text-transform:uppercase; letter-spacing:0.04em; color:var(--text); line-height:1.1; flex:1; padding-right:8px; }
+.wishlist-tag {
+  display:inline-block;
+  background: rgba(176,32,80,0.08);
+  color: var(--crimson);
+  font-family:'Big Shoulders Display',sans-serif;
+  font-weight:800; font-size:11px;
+  text-transform:uppercase; letter-spacing:0.08em;
+  padding:3px 10px; border-radius:50px;
+  margin-bottom:12px;
+}
+.wishlist-popup-row { display:flex; gap:9px; align-items:flex-start; margin-bottom:8px; }
+.wishlist-popup-row-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+.wishlist-popup-row-label { font-family:'Big Shoulders Display',sans-serif; font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); display:block; margin-bottom:2px; }
+.wishlist-popup-row-val { font-family:'Unica One',sans-serif; color:var(--text); font-size:13px; line-height:1.45; }
+.wishlist-maps-btn { display:flex; align-items:center; justify-content:center; gap:6px; background:var(--crimson); color:white; border:none; border-radius:8px; padding:10px 0; width:100%; font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:14px; text-transform:uppercase; letter-spacing:0.07em; cursor:pointer; text-decoration:none; margin-top:12px; transition:background 0.15s; }
+.wishlist-maps-btn:hover { background:var(--pink); }
+
+@media (max-width: 600px) {
+  .wishlist-popup {
+    width: calc(100vw - 24px);
+    left: 12px !important;
+    right: 12px;
+    top: auto !important;
+    bottom: 12px;
+    max-height: 75vh;
+  }
+}
 </style>
 </head>
 <body>
@@ -310,6 +384,7 @@ header::after {
     <a class="nav-menu-item" href="index.html" onclick="closeMenu()"><span class="nav-item-icon">🗺️</span><div><span>Map</span><span class="nav-item-sub">Explore visited spots</span></div></a>
     <a class="nav-menu-item" href="#" onclick="scrollToTop10();closeMenu()"><span class="nav-item-icon">🏆</span><div><span>Rankings</span><span class="nav-item-sub">Leah's top 10 list</span></div></a>
     <a class="nav-menu-item" href="sidequests.html" onclick="closeMenu()"><span class="nav-item-icon">📓</span><div><span>Side Quests</span><span class="nav-item-sub">Blog & adventures</span></div></a>
+        <a class="nav-menu-item" href="wishlist.html"><span class="nav-item-icon">⭐</span><div><span>Wishlist</span><span class="nav-item-sub">Places to try</span></div></a>
     <a class="nav-menu-item" href="about.html" onclick="closeMenu()"><span class="nav-item-icon">🍦</span><div><span>About Leah</span><span class="nav-item-sub">The scoop on the scooper</span></div></a>
   </nav>
 </header>
@@ -333,6 +408,7 @@ header::after {
       <div class="legend-item"><div class="ldot" style="background:#FF8C42"></div>Homemade</div>
       <div class="legend-item"><div class="ldot" style="background:#5BC8F5"></div>Soft Serve</div>
       <div class="legend-item"><div class="ldot" style="background:#FFD84A"></div>Big Chain</div>
+        <div class="legend-item"><div class="ldot" style="background:white;border:2px dashed #B02050"></div>Wishlist</div>
     </div>
 
     <!-- counter -->
@@ -367,6 +443,31 @@ header::after {
     </div>
   </div>
 
+</div>
+
+<!-- WISHLIST POPUP -->
+<div class="wishlist-popup" id="wishlistPopup">
+  <div class="wishlist-popup-stripe"></div>
+  <div class="wishlist-popup-inner">
+    <div class="wishlist-popup-top">
+      <div class="wishlist-popup-name" id="wPopupName"></div>
+      <button class="popup-close" onclick="closeWishlistPopup()">✕</button>
+    </div>
+    <div class="wishlist-tag">⭐ On the Wishlist</div>
+    <div class="wishlist-popup-row">
+      <span class="wishlist-popup-row-icon">🍦</span>
+      <div><span class="wishlist-popup-row-label">Type</span><span class="wishlist-popup-row-val" id="wPopupType"></span></div>
+    </div>
+    <div class="wishlist-popup-row">
+      <span class="wishlist-popup-row-icon">💭</span>
+      <div><span class="wishlist-popup-row-label">Why to go / What to get</span><span class="wishlist-popup-row-val" id="wPopupWhy"></span></div>
+    </div>
+    <div class="wishlist-popup-row" id="wPopupRefRow">
+      <span class="wishlist-popup-row-icon">👤</span>
+      <div><span class="wishlist-popup-row-label">Referred by</span><span class="wishlist-popup-row-val" id="wPopupRef"></span></div>
+    </div>
+    <a class="wishlist-maps-btn" id="wPopupMaps" href="#" target="_blank">📍 Open in Google Maps</a>
+  </div>
 </div>
 
 <!-- POPUP CARD -->
@@ -409,7 +510,8 @@ header::after {
 <script>
 const SHEET_ID = '1FWTUBZaZFE6S99jrON26zAg2W8-Y465udQssaSBKvCM';
 const API_KEY  = 'AIzaSyDGgZg3qjsf7vojo47ryZ4fw28lauvKgB0';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Form%20Responses%201`;
+const WISHLIST_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Form%20Responses%202`;
 
 // ── column mapping (0-indexed, matches your sheet order) ──
 const COL = {
@@ -445,7 +547,111 @@ const SCORE_LABELS = [
   { key:'desirability', label:'Other Flavors',            icon:'🧁' }
 ];
 
-let map, allSpots = [], markers = [];
+let map, allSpots = [], wishlistSpots = [], markers = [];
+
+
+// ── fetch wishlist data ──
+async function loadWishlistData(ratedNames) {
+  try {
+    const res = await fetch(WISHLIST_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows = json.table.rows;
+
+    wishlistSpots = rows.map(row => {
+      const c = row.c;
+      const get = i => (c[i] && c[i].v !== null) ? String(c[i].v).trim() : '';
+      return {
+        name:    get(1),
+        address: get(2),
+        type:    get(3),
+        why:     get(4),
+        ref:     get(5),
+        mapsUrl: `https://maps.google.com/?q=${encodeURIComponent(get(2))}`
+      };
+    }).filter(s => {
+      if (!s.name || !s.address) return false;
+      // cross-reference: remove if already rated
+      const alreadyRated = ratedNames.some(n =>
+        n.toLowerCase().trim() === s.name.toLowerCase().trim()
+      );
+      return !alreadyRated;
+    });
+
+    return wishlistSpots;
+  } catch(e) {
+    console.error('Wishlist load error:', e);
+    return [];
+  }
+}
+
+function showWishlistPopup(spot, position) {
+  const popup = document.getElementById('wishlistPopup');
+  document.getElementById('wPopupName').textContent = spot.name;
+  document.getElementById('wPopupType').textContent = spot.type || '—';
+  document.getElementById('wPopupWhy').textContent = spot.why || '—';
+  document.getElementById('wPopupMaps').href = spot.mapsUrl;
+  const refRow = document.getElementById('wPopupRefRow');
+  if (spot.ref) {
+    document.getElementById('wPopupRef').textContent = spot.ref;
+    refRow.style.display = 'flex';
+  } else {
+    refRow.style.display = 'none';
+  }
+  const W = window.innerWidth, H = window.innerHeight;
+  if (W > 600) {
+    const cardW = 280, cardH = 320;
+    let x = position.x + 16, y = position.y - cardH / 2;
+    if (x + cardW > W - 10) x = position.x - cardW - 16;
+    if (y < 10) y = 10;
+    if (y + cardH > H - 10) y = H - cardH - 10;
+    popup.style.left = x + 'px';
+    popup.style.top  = y + 'px';
+  }
+  // close rated popup if open
+  document.getElementById('popupCard').classList.remove('visible');
+  popup.classList.add('visible');
+}
+
+function closeWishlistPopup() {
+  document.getElementById('wishlistPopup').classList.remove('visible');
+}
+
+async function geocodeAndPinWishlist(spot) {
+  return new Promise(resolve => {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: spot.address }, (results, status) => {
+      if (status === 'OK') {
+        const pos = results[0].geometry.location;
+        placeWishlistMarker(spot, pos);
+      }
+      resolve();
+    });
+  });
+}
+
+function placeWishlistMarker(spot, position) {
+  const pinDiv = document.createElement('div');
+  pinDiv.className = 'gmap-pin-wishlist';
+  pinDiv.innerHTML = `
+    <div class="gmap-pin-circle-wishlist">⭐</div>
+    <div class="gmap-pin-label-wishlist">${spot.name}</div>`;
+
+  const overlay = new google.maps.marker.AdvancedMarkerElement({
+    map,
+    position,
+    content: pinDiv,
+    title: spot.name,
+    zIndex: 4
+  });
+
+  pinDiv.addEventListener('click', e => {
+    e.stopPropagation();
+    showWishlistPopup(spot, { x: e.clientX, y: e.clientY });
+  });
+
+  markers.push(overlay);
+}
 
 // ── fetch sheet data ──
 async function loadSheetData() {
@@ -633,14 +839,24 @@ async function initMap() {
     styles: []
   });
 
-  map.addListener('click', closePopup);
+  map.addListener('click', () => { closePopup(); closeWishlistPopup(); });
 
   const spots = await loadSheetData();
   document.getElementById('mapLoading').classList.add('hidden');
 
-  // geocode sequentially to avoid rate limits
+  // geocode rated spots
   for (const spot of spots) {
     await geocodeAndPin(spot);
+    await new Promise(r => setTimeout(r, 120));
+  }
+
+  // load wishlist, cross-referencing rated spot names
+  const ratedNames = spots.map(s => s.name);
+  const wSpots = await loadWishlistData(ratedNames);
+
+  // geocode wishlist spots
+  for (const spot of wSpots) {
+    await geocodeAndPinWishlist(spot);
     await new Promise(r => setTimeout(r, 120));
   }
 

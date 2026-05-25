@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wishlist — Leah Loves Ice Cream</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Unica+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:    #FF79C0;
+  --crimson: #B02050;
+  --orange:  #FF8C42;
+  --yellow:  #FFD84A;
+  --blue:    #5BC8F5;
+  --green:   #2A7A3B;
+  --cream:   #FFFBE0;
+  --white:   #FFFFFF;
+  --text:    #111111;
+  --muted:   #777;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { font-family:'Unica One',sans-serif; background:var(--white); color:var(--text); min-height:100vh; }
+
+/* ─── HEADER ─── */
+header {
+  background: var(--crimson);
+  padding: 14px 32px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(176,32,80,0.3);
+  z-index: 30;
+}
+header::before { content:'🍦'; position:absolute; right:-10px; top:-18px; font-size:130px; opacity:0.1; pointer-events:none; }
+header::after { content:''; position:absolute; top:0; right:160px; width:3px; height:100%; background:rgba(255,121,192,0.25); transform:skewX(-12deg); pointer-events:none; }
+.logo { display:flex; flex-direction:column; gap:2px; position:relative; z-index:1; text-decoration:none; }
+.logo-eyebrow { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--pink); opacity:0.85; }
+.logo-text { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:clamp(28px,3.2vw,44px); color:var(--white); text-transform:uppercase; letter-spacing:0.03em; line-height:0.95; }
+.logo-text em { color:var(--pink); font-style:normal; }
+.menu-btn { width:40px; height:40px; border-radius:8px; background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,121,192,0.35); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; transition:background 0.15s; }
+.menu-btn:hover { background:rgba(255,121,192,0.25); }
+.menu-btn span { display:block; width:18px; height:2px; background:white; border-radius:2px; transition:all 0.2s; }
+.menu-btn.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.menu-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+.menu-btn.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+.nav-menu { position:absolute; top:calc(100% + 8px); right:32px; width:220px; background:white; border-radius:14px; box-shadow:0 16px 48px rgba(0,0,0,0.18); overflow:hidden; z-index:100; opacity:0; pointer-events:none; transform:translateY(-8px) scale(0.97); transform-origin:top right; transition:opacity 0.18s,transform 0.2s cubic-bezier(.34,1.56,.64,1); }
+.nav-menu.open { opacity:1; pointer-events:all; transform:translateY(0) scale(1); }
+.nav-menu-item { display:flex; align-items:center; gap:12px; padding:14px 18px; font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; text-transform:uppercase; letter-spacing:0.05em; color:#111; cursor:pointer; transition:background 0.12s,color 0.12s; border-bottom:1px solid #f2f2f2; text-decoration:none; }
+.nav-menu-item:last-child { border-bottom:none; }
+.nav-menu-item:hover { background:var(--crimson); color:white; }
+.nav-item-icon { font-size:18px; flex-shrink:0; width:24px; text-align:center; }
+.nav-item-sub { font-family:'Unica One',sans-serif; font-size:10px; font-weight:400; text-transform:none; letter-spacing:0.04em; opacity:0.5; display:block; margin-top:1px; }
+
+/* ─── HERO ─── */
+.wishlist-hero {
+  background: var(--crimson);
+  padding: 48px 40px 52px;
+  position: relative; overflow: hidden;
+}
+.wishlist-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 80% 30%, rgba(255,121,192,0.2) 0%, transparent 55%),
+    radial-gradient(circle at 5% 80%, rgba(176,32,80,0.5) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; }
+.hero-eyebrow { font-family:'Unica One',sans-serif; font-size:12px; letter-spacing:0.2em; text-transform:uppercase; color:var(--pink); margin-bottom:10px; }
+.hero-title { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:clamp(56px,9vw,110px); text-transform:uppercase; letter-spacing:0.02em; color:white; line-height:0.88; margin-bottom:16px; }
+.hero-title em { color:var(--pink); font-style:normal; display:block; }
+.hero-desc { font-family:'Unica One',sans-serif; font-size:15px; color:rgba(255,255,255,0.6); letter-spacing:0.04em; max-width:480px; line-height:1.6; }
+.hero-count { display:inline-block; margin-top:20px; background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,121,192,0.4); border-radius:50px; padding:8px 20px; font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; color:white; letter-spacing:0.05em; }
+.hero-count em { color:var(--pink); font-style:normal; }
+
+/* ─── CONTENT ─── */
+.wishlist-content { max-width: 960px; margin: 0 auto; padding: 48px 32px 80px; }
+
+/* ─── FILTERS ─── */
+.filter-bar {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.filter-btn {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 8px 18px; border-radius: 50px;
+  border: 2px solid rgba(0,0,0,0.1);
+  background: white; color: var(--muted);
+  cursor: pointer; transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+.filter-btn.active { background: var(--crimson); color: white; border-color: var(--crimson); }
+
+/* ─── LOADING ─── */
+.loading-state {
+  text-align: center; padding: 60px 20px;
+}
+.loading-cone { font-size: 48px; animation: wobble 1.2s ease-in-out infinite; display: block; margin-bottom: 16px; }
+@keyframes wobble { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
+.loading-text { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:20px; text-transform:uppercase; letter-spacing:0.08em; color:var(--crimson); }
+
+/* ─── EMPTY STATE ─── */
+.empty-state { text-align:center; padding:60px 20px; }
+.empty-emoji { font-size:56px; display:block; margin-bottom:16px; }
+.empty-title { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:28px; text-transform:uppercase; letter-spacing:0.06em; color:var(--text); margin-bottom:8px; }
+.empty-desc { font-family:'Unica One',sans-serif; font-size:14px; color:var(--muted); line-height:1.6; }
+
+/* ─── WISHLIST GRID ─── */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.wishlist-card {
+  background: white;
+  border: 2px dashed rgba(176,32,80,0.25);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s, border-color 0.15s;
+  cursor: default;
+}
+.wishlist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+  border-color: var(--crimson);
+}
+
+.card-header {
+  background: linear-gradient(135deg, var(--crimson), var(--pink));
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  min-height: 80px;
+  display: flex; align-items: flex-end;
+}
+.card-header::before {
+  content: '⭐';
+  position: absolute; right: -6px; top: -10px;
+  font-size: 70px; opacity: 0.15; line-height: 1;
+}
+.card-type-badge {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  background: rgba(255,255,255,0.2);
+  color: white; border-radius: 50px;
+  padding: 3px 12px;
+  position: relative; z-index: 1;
+}
+.card-type-badge.homemade { background: rgba(255,140,66,0.4); }
+.card-type-badge.softserve { background: rgba(91,200,245,0.4); }
+.card-type-badge.big { background: rgba(255,216,74,0.35); }
+
+.card-body { padding: 16px 18px 18px; }
+.card-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 18px;
+  text-transform: uppercase; letter-spacing: 0.03em;
+  color: var(--text); line-height: 1.1; margin-bottom: 4px;
+}
+.card-address {
+  font-family: 'Unica One', sans-serif;
+  font-size: 11px; color: var(--muted);
+  margin-bottom: 12px; letter-spacing: 0.03em;
+}
+
+.card-divider { height:1px; background:#f2f2f2; margin:10px 0; }
+
+.card-row { display:flex; gap:8px; align-items:flex-start; margin-bottom:8px; }
+.card-row-icon { font-size:13px; flex-shrink:0; margin-top:1px; }
+.card-row-label { font-family:'Big Shoulders Display',sans-serif; font-weight:700; font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:#bbb; display:block; margin-bottom:2px; }
+.card-row-val { font-family:'Unica One',sans-serif; font-size:12px; color:#444; line-height:1.45; }
+
+.card-maps-btn {
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  background: var(--crimson); color:white; border:none; border-radius:8px;
+  padding:9px 0; width:100%;
+  font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:13px;
+  text-transform:uppercase; letter-spacing:0.07em;
+  cursor:pointer; text-decoration:none; margin-top:12px;
+  transition:background 0.15s;
+}
+.card-maps-btn:hover { background: var(--pink); }
+
+/* ─── MOBILE ─── */
+@media (max-width: 600px) {
+  header { padding: 10px 16px 8px; }
+  .logo-text { font-size: 26px; }
+  .nav-menu { right: 16px; }
+  .wishlist-hero { padding: 32px 20px 36px; }
+  .hero-title { font-size: 56px; }
+  .wishlist-content { padding: 32px 16px 60px; }
+  .wishlist-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card-name { font-size: 14px; }
+  .card-body { padding: 12px 14px 14px; }
+}
+
+@media (max-width: 400px) {
+  .wishlist-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <span class="logo-eyebrow">A sweet adventure log</span>
+    <span class="logo-text">Leah <em>Loves</em> Ice Cream</span>
+  </a>
+  <button class="menu-btn" id="menuBtn" onclick="toggleMenu(event)">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav-menu" id="navMenu">
+    <a class="nav-menu-item" href="index.html"><span class="nav-item-icon">🗺️</span><div><span>Map</span><span class="nav-item-sub">Explore visited spots</span></div></a>
+    <a class="nav-menu-item" href="index.html#top10"><span class="nav-item-icon">🏆</span><div><span>Rankings</span><span class="nav-item-sub">Leah's top 10 list</span></div></a>
+    <a class="nav-menu-item" href="sidequests.html"><span class="nav-item-icon">📓</span><div><span>Side Quests</span><span class="nav-item-sub">Blog & adventures</span></div></a>
+    <a class="nav-menu-item" href="wishlist.html"><span class="nav-item-icon">⭐</span><div><span>Wishlist</span><span class="nav-item-sub">Places to try</span></div></a>
+    <a class="nav-menu-item" href="about.html"><span class="nav-item-icon">🍦</span><div><span>About Leah</span><span class="nav-item-sub">The scoop on the scooper</span></div></a>
+  </nav>
+</header>
+
+<div class="wishlist-hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Places to try</div>
+    <div class="hero-title">The<em>Wishlist</em></div>
+    <div class="hero-desc">Every scoop spot Leah has her eye on. The bucket list, the tips, the recommendations — all the places we haven't tried yet but absolutely will.</div>
+    <div class="hero-count">⭐ <em id="wishlistCount">—</em> spots on the list</div>
+  </div>
+</div>
+
+<div class="wishlist-content">
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCards('all', this)">All</button>
+    <button class="filter-btn" onclick="filterCards('homemade ice cream', this)">🧡 Homemade</button>
+    <button class="filter-btn" onclick="filterCards('soft serve', this)">🩵 Soft Serve</button>
+    <button class="filter-btn" onclick="filterCards('big ice cream', this)">🟡 Big Chain</button>
+  </div>
+
+  <div id="loadingState" class="loading-state">
+    <span class="loading-cone">⭐</span>
+    <div class="loading-text">Loading the wishlist...</div>
+  </div>
+
+  <div class="wishlist-grid" id="wishlistGrid" style="display:none"></div>
+
+  <div class="empty-state" id="emptyState" style="display:none">
+    <span class="empty-emoji">🍦</span>
+    <div class="empty-title">Nothing here yet!</div>
+    <div class="empty-desc">No spots match this filter — try a different one.</div>
+  </div>
+
+</div>
+
+<script>
+const SHEET_ID = '1FWTUBZaZFE6S99jrON26zAg2W8-Y465udQssaSBKvCM';
+const RATED_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Form%20Responses%201`;
+const WISHLIST_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Form%20Responses%202`;
+
+let allWishlist = [];
+
+function typeBadgeClass(type) {
+  if (!type) return '';
+  const t = type.toLowerCase();
+  if (t.includes('homemade')) return 'homemade';
+  if (t.includes('soft')) return 'softserve';
+  if (t.includes('big')) return 'big';
+  return '';
+}
+
+function renderCards(spots) {
+  const grid = document.getElementById('wishlistGrid');
+  const empty = document.getElementById('emptyState');
+  if (!spots.length) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
+  grid.innerHTML = spots.map(s => `
+    <div class="wishlist-card" data-type="${(s.type||'').toLowerCase()}">
+      <div class="card-header">
+        <span class="card-type-badge ${typeBadgeClass(s.type)}">${s.type || 'Ice Cream'}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${s.name}</div>
+        <div class="card-address">📍 ${s.address}</div>
+        ${s.why ? `
+        <div class="card-divider"></div>
+        <div class="card-row">
+          <span class="card-row-icon">💭</span>
+          <div><span class="card-row-label">Why to go</span><span class="card-row-val">${s.why}</span></div>
+        </div>` : ''}
+        ${s.ref ? `
+        <div class="card-row">
+          <span class="card-row-icon">👤</span>
+          <div><span class="card-row-label">Referred by</span><span class="card-row-val">${s.ref}</span></div>
+        </div>` : ''}
+        <a class="card-maps-btn" href="https://maps.google.com/?q=${encodeURIComponent(s.address)}" target="_blank">📍 Open in Google Maps</a>
+      </div>
+    </div>`).join('');
+}
+
+function filterCards(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (type === 'all') {
+    renderCards(allWishlist);
+  } else {
+    renderCards(allWishlist.filter(s => (s.type||'').toLowerCase().includes(type.toLowerCase().split(' ')[0])));
+  }
+}
+
+async function loadData() {
+  try {
+    // Load rated places first
+    const ratedRes = await fetch(RATED_URL);
+    const ratedText = await ratedRes.text();
+    const ratedJson = JSON.parse(ratedText.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const ratedNames = (ratedJson.table.rows || []).map(row =>
+      row.c[1] && row.c[1].v ? String(row.c[1].v).trim().toLowerCase() : ''
+    ).filter(Boolean);
+
+    // Load wishlist
+    const wRes = await fetch(WISHLIST_URL);
+    const wText = await wRes.text();
+    const wJson = JSON.parse(wText.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows = wJson.table.rows || [];
+
+    allWishlist = rows.map(row => {
+      const c = row.c;
+      const get = i => (c[i] && c[i].v !== null) ? String(c[i].v).trim() : '';
+      return {
+        name:    get(1),
+        address: get(2),
+        type:    get(3),
+        why:     get(4),
+        ref:     get(5)
+      };
+    }).filter(s => {
+      if (!s.name || !s.address) return false;
+      // cross-reference: hide if already rated
+      return !ratedNames.includes(s.name.toLowerCase().trim());
+    });
+
+    document.getElementById('wishlistCount').textContent = allWishlist.length;
+    document.getElementById('loadingState').style.display = 'none';
+    renderCards(allWishlist);
+
+  } catch(e) {
+    console.error('Load error:', e);
+    document.getElementById('loadingState').innerHTML = '<span class="empty-emoji">😕</span><div class="loading-text">Couldn\'t load wishlist</div>';
+  }
+}
+
+function toggleMenu(e) {
+  e.stopPropagation();
+  document.getElementById('menuBtn').classList.toggle('open');
+  document.getElementById('navMenu').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.menu-btn') && !e.target.closest('.nav-menu')) {
+    document.getElementById('menuBtn').classList.remove('open');
+    document.getElementById('navMenu').classList.remove('open');
+  }
+});
+
+loadData();
+</script>
+</body>
+</html>
