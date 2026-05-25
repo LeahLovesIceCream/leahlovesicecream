@@ -398,6 +398,58 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
 .menu-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
 .menu-btn.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
 </style>
+
+<style>
+@media (max-width: 600px) {
+  /* Hero */
+  .about-hero {
+    grid-template-columns: 1fr;
+    padding: 32px 20px 0;
+    min-height: auto;
+  }
+  .hero-photo-wrap { display: none; }
+  .hero-title { font-size: 64px; }
+  .hero-text { padding-bottom: 32px; }
+
+  /* Content grid → single column */
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 40px 20px 60px;
+  }
+
+  /* Origin section */
+  .origin-section { grid-column: 1; }
+  .section-title { font-size: 32px; }
+  .pull-quote-text { font-size: 18px; }
+
+  /* Stats */
+  .stats-section { grid-column: 1; }
+  .stat-num { font-size: 36px; }
+
+  /* Rating grid → 2 columns */
+  .rating-section { grid-column: 1; }
+  .rating-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .rating-item { padding: 12px 10px; }
+  .rating-icon { font-size: 22px; }
+  .rating-name { font-size: 11px; }
+
+  /* Location card */
+  .location-card {
+    grid-column: 1;
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 20px;
+  }
+  .location-name { font-size: 22px; }
+
+  /* Section labels */
+  .section-label { margin-bottom: 10px; }
+}
+</style>
 </head>
 <body>
 
