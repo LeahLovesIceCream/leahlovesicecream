@@ -34,7 +34,7 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-html { height:100%; overflow:hidden; } body { font-family:'Unica One',sans-serif; background:var(--cream); color:var(--text); height:100%; overflow:hidden; display:flex; flex-direction:column; }
+html { height:100%; } body { font-family:'Unica One',sans-serif; background:var(--cream); color:var(--text); height:100%; display:flex; flex-direction:column; overflow:hidden; }
 
 /* ─── HEADER ─── */
 header {
@@ -243,7 +243,7 @@ header::after {
 .maps-btn:hover { background:#FF9100; transform:translateY(-1px); }
 
 /* ─── TOP 10 SECTION ─── */
-.top10-section { min-height:calc(100vh - 80px); scroll-snap-align:start; background:#2A7A3B; padding:48px 0 56px; position:relative; overflow:hidden; }
+.top10-section { min-height:calc(100vh - 80px); scroll-snap-align:start; padding-bottom:80px; background:#2A7A3B; padding:48px 0 56px; position:relative; overflow:hidden; }
 .top10-section::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle at 15% 30%,rgba(62,198,245,0.15) 0%,transparent 55%),radial-gradient(circle at 85% 70%,rgba(20,80,30,0.4) 0%,transparent 55%); pointer-events:none; }
 .top10-header { text-align:center; margin-bottom:36px; position:relative; z-index:2; padding:0 32px; }
 .top10-eyebrow { font-family:'Unica One',sans-serif; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; color:#5BC8F5; margin-bottom:8px; }
@@ -1600,16 +1600,13 @@ document.addEventListener('click', e => { if (!e.target.closest('.menu-btn') && 
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGgZg3qjsf7vojo47ryZ4fw28lauvKgB0&callback=initMap&loading=async">
 </script>
 
-
 <!-- FOOTER -->
-<footer class="site-footer" style="scroll-snap-align:none;flex-shrink:0;">
+<footer class="site-footer" style="scroll-snap-align:none;">
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">Leah <em>Loves</em> Ice Cream</div>
       <div class="footer-tagline">A living map of every scoop Leah has rated — from hidden Cambridge gems to soft serve on the side of the road.</div>
-      <a class="footer-insta" href="https://instagram.com/leah.loves.icecream" target="_blank">
-        📸 @leah.loves.icecream
-      </a>
+      <a class="footer-insta" href="https://instagram.com/leah.loves.icecream" target="_blank">📸 @leah.loves.icecream</a>
     </div>
     <div class="footer-nav">
       <div class="footer-nav-title">Explore</div>
@@ -1623,10 +1620,7 @@ document.addEventListener('click', e => { if (!e.target.closest('.menu-btn') && 
     </div>
     <div class="footer-extra">
       <div class="footer-nav-title">The fine print</div>
-      <div class="footer-lactaid">
-        Leah is lactose intolerant and has never once let that stop her. She takes a Lactaid with every visit without exception.<br><br>
-        Dear <a href="https://www.lactaid.com" target="_blank">Lactaid</a>: she is available for sponsorship. She is serious. Please reach out.
-      </div>
+      <div class="footer-lactaid">Dear <a href="https://www.lactaid.com" target="_blank">Lactaid</a>: she is available for sponsorship. She is serious. Please reach out.</div>
     </div>
   </div>
   <div class="footer-bottom">
