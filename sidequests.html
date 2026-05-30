@@ -410,6 +410,30 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
 .menu-btn.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
 .menu-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
 .menu-btn.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+/* ─── COMING SOON ─── */
+.coming-soon-header {
+  background: var(--cream);
+  border-radius: 20px;
+  padding: 36px 40px;
+  margin-bottom: 40px;
+  border: 1px solid rgba(255,140,66,0.15);
+}
+.cs-eyebrow { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--orange); margin-bottom:10px; }
+.cs-title { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:32px; text-transform:uppercase; letter-spacing:0.04em; color:var(--text); margin-bottom:20px; }
+.cs-topics { display:flex; flex-direction:column; gap:10px; }
+.cs-topic { font-family:'Unica One',sans-serif; font-size:15px; color:#444; padding:10px 16px; background:white; border-radius:10px; border:1px solid rgba(0,0,0,0.06); letter-spacing:0.03em; transition:border-color 0.15s, transform 0.15s; }
+.cs-topic:hover { border-color:var(--orange); transform:translateX(4px); }
+.empty-posts { text-align:center; padding:48px 20px; margin-bottom:40px; }
+.empty-icon { font-size:48px; margin-bottom:14px; display:block; }
+.empty-title { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:24px; text-transform:uppercase; letter-spacing:0.06em; color:var(--text); margin-bottom:8px; }
+.empty-desc { font-family:'Unica One',sans-serif; font-size:14px; color:var(--muted); line-height:1.65; max-width:400px; margin:0 auto; }
+@media (max-width: 600px) {
+  .coming-soon-header { padding:24px 20px; }
+  .cs-title { font-size:24px; }
+  .cs-topic { font-size:13px; }
+}
+
 </style>
 
 <style>
@@ -478,62 +502,24 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
 <!-- CONTENT -->
 <div class="page-content">
 
-  <!-- FEATURED -->
-  <div class="featured-label">Latest post</div>
-  <div class="featured-card">
-    <div class="featured-img">
-      <div class="img-pattern"></div>
-      🍨
-    </div>
-    <div class="featured-body">
-      <span class="post-category cat-adventure">Adventure</span>
-      <div class="featured-title">Gelato Adventures in Italy</div>
-      <div class="post-meta">
-        <span>May 20, 2026</span>
-        <div class="meta-dot"></div>
-        <span>6 min read</span>
-      </div>
-      <div class="featured-excerpt">I went to Italy for the art. I stayed for the gelato. Here's everything I learned about what makes real Italian gelato different — and the 7 spots in Florence that completely ruined American ice cream for me forever.</div>
-      <a class="read-btn" href="#">Read on Substack <span class="arrow">→</span></a>
+  <!-- COMING SOON TEASER -->
+  <div class="coming-soon-header">
+    <div class="cs-eyebrow">Coming soon to Side Quests</div>
+    <div class="cs-title">Stay tuned for</div>
+    <div class="cs-topics">
+      <div class="cs-topic">🍨 Gelato Adventures in Italy</div>
+      <div class="cs-topic">🏆 Jimmy Fund Scooper Bowl Recap</div>
+      <div class="cs-topic">🍦 Favorite Homemade Ice Cream Recipes</div>
+      <div class="cs-topic">📍 Hidden Gems of Greater Boston</div>
+      <div class="cs-topic">✍️ And much more...</div>
     </div>
   </div>
 
-  <!-- GRID -->
-  <div class="grid-label">More posts</div>
-  <div class="post-grid">
-
-    <div class="post-card">
-      <div class="post-card-img" style="background: linear-gradient(135deg, #FF79C0, #B02050)">
-        <div class="img-pattern"></div>
-        🍦
-      </div>
-      <div class="post-card-body">
-        <span class="post-category cat-diy">DIY</span>
-        <div class="post-card-title">Homemade Ice Cream at Home</div>
-        <div class="post-card-excerpt">You don't need a fancy machine. Here's my foolproof method for making creamy, scoopable ice cream with just a freezer and a whisk.</div>
-        <div class="post-card-footer">
-          <div class="post-card-meta">April 8, 2026 · 4 min read</div>
-          <div class="post-card-arrow">→</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="post-card" style="opacity:0.45; pointer-events:none;">
-      <div class="post-card-img" style="background: linear-gradient(135deg, #FFD84A, #FF8C42)">
-        <div class="img-pattern"></div>
-        🍧
-      </div>
-      <div class="post-card-body">
-        <span class="post-category cat-review">Coming Soon</span>
-        <div class="post-card-title">Your Next Post Here</div>
-        <div class="post-card-excerpt">Every time you publish on Substack, it will automatically appear here on the site.</div>
-        <div class="post-card-footer">
-          <div class="post-card-meta">Pulled live from Substack</div>
-          <div class="post-card-arrow">→</div>
-        </div>
-      </div>
-    </div>
-
+  <!-- EMPTY STATE -->
+  <div class="empty-posts">
+    <div class="empty-icon">📝</div>
+    <div class="empty-title">Posts coming soon</div>
+    <div class="empty-desc">Leah is busy eating ice cream and taking notes. The blog is on its way — subscribe below so you don't miss the first post.</div>
   </div>
 
   <!-- SUBSTACK CTA -->
