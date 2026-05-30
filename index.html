@@ -34,7 +34,7 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-html, body { font-family:'Unica One',sans-serif; background:var(--cream); color:var(--text); height:100%; overflow:hidden; display:flex; flex-direction:column; }
+html { height:100%; overflow:hidden; } body { font-family:'Unica One',sans-serif; background:var(--cream); color:var(--text); height:100%; overflow:hidden; display:flex; flex-direction:column; }
 
 /* ─── HEADER ─── */
 header {
@@ -1602,7 +1602,7 @@ document.addEventListener('click', e => { if (!e.target.closest('.menu-btn') && 
 
 
 <!-- FOOTER -->
-<footer class="site-footer">
+<footer class="site-footer" style="scroll-snap-align:none;flex-shrink:0;">
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">Leah <em>Loves</em> Ice Cream</div>
@@ -1634,6 +1634,7 @@ document.addEventListener('click', e => { if (!e.target.closest('.menu-btn') && 
     <div class="footer-copy">So much ice cream, so little time.</div>
   </div>
 </footer>
+</div><!-- /page-scroll -->
 
 </body>
 </html>
