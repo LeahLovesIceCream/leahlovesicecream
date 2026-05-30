@@ -243,7 +243,8 @@ header::after {
 .maps-btn:hover { background:#FF9100; transform:translateY(-1px); }
 
 /* ─── TOP 10 SECTION ─── */
-.top10-section { min-height:calc(100vh - 80px); scroll-snap-align:start; padding-bottom:80px; background:#2A7A3B; padding:48px 0 56px; position:relative; overflow:hidden; }
+.top10-section { min-height:calc(100vh - 80px); scroll-snap-align:start; background:#2A7A3B; padding:48px 0 56px; position:relative; overflow:visible; }
+.site-footer { scroll-snap-align:none !important; }
 .top10-section::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle at 15% 30%,rgba(62,198,245,0.15) 0%,transparent 55%),radial-gradient(circle at 85% 70%,rgba(20,80,30,0.4) 0%,transparent 55%); pointer-events:none; }
 .top10-header { text-align:center; margin-bottom:36px; position:relative; z-index:2; padding:0 32px; }
 .top10-eyebrow { font-family:'Unica One',sans-serif; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; color:#5BC8F5; margin-bottom:8px; }
@@ -1601,7 +1602,7 @@ document.addEventListener('click', e => { if (!e.target.closest('.menu-btn') && 
 </script>
 
 <!-- FOOTER -->
-<footer class="site-footer" style="scroll-snap-align:none;">
+<footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">Leah <em>Loves</em> Ice Cream</div>
