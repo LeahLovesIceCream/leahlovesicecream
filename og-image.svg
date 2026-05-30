@@ -1,0 +1,25 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="rightClip">
+      <polygon points="760,0 1200,0 1200,630 680,630"/>
+    </clipPath>
+    <pattern id="hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="16" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <!-- bg -->
+  <rect width="1200" height="630" fill="#B02050"/>
+  <!-- green right panel -->
+  <polygon points="760,0 1200,0 1200,630 680,630" fill="#2A7A3B"/>
+  <!-- hatch overlay -->
+  <rect width="1200" height="630" fill="url(#hatch)"/>
+  <!-- left content -->
+  <text x="60" y="100" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="rgba(255,255,255,0.4)" letter-spacing="4">LEAHLOVESICECREAM.COM</text>
+  <text x="60" y="230" font-family="Arial Black,sans-serif" font-weight="900" font-size="110" fill="white" letter-spacing="2">LEAH</text>
+  <text x="60" y="340" font-family="Arial Black,sans-serif" font-weight="900" font-size="110" fill="#FF79C0" letter-spacing="2">LOVES</text>
+  <text x="60" y="450" font-family="Arial Black,sans-serif" font-weight="900" font-size="110" fill="white" letter-spacing="2">ICE CREAM</text>
+  <text x="60" y="510" font-family="Arial Black,sans-serif" font-weight="900" font-size="24" fill="#FFD84A" letter-spacing="3">SO MUCH ICE CREAM, SO LITTLE TIME.</text>
+  <text x="60" y="590" font-family="Arial,sans-serif" font-size="18" fill="rgba(255,255,255,0.3)" letter-spacing="2">@LEAH.LOVES.ICECREAM</text>
+  <!-- ice cream emoji area -->
+  <text x="920" y="380" font-family="Arial,sans-serif" font-size="180" text-anchor="middle">🍦</text>
+</svg>

@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EFW290VKQL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EFW290VKQL');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wishlist — Leah Loves Ice Cream</title>
@@ -202,7 +210,110 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
 @media (max-width: 400px) {
   .wishlist-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── FOOTER ─── */
+.site-footer {
+  background: var(--text);
+  padding: 40px 40px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.site-footer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0px,rgba(255,255,255,0.02) 1px,transparent 1px,transparent 14px);
+  pointer-events: none;
+}
+.footer-inner {
+  position: relative; z-index: 1;
+  max-width: 960px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.footer-brand {}
+.footer-logo {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 22px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: white; line-height: 1; margin-bottom: 8px;
+}
+.footer-logo em { color: var(--pink); font-style: normal; }
+.footer-tagline {
+  font-family: 'Unica One', sans-serif;
+  font-size: 12px; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.04em; line-height: 1.6;
+  margin-bottom: 16px;
+}
+.footer-insta {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 50px; padding: 7px 14px;
+  font-family: 'Unica One', sans-serif;
+  font-size: 12px; color: rgba(255,255,255,0.7);
+  text-decoration: none; letter-spacing: 0.04em;
+  transition: all 0.15s;
+}
+.footer-insta:hover { background: rgba(255,121,192,0.2); border-color: var(--pink); color: var(--pink); }
+
+.footer-nav-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.35); margin-bottom: 14px;
+}
+.footer-nav-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-nav-link {
+  font-family: 'Unica One', sans-serif;
+  font-size: 14px; color: rgba(255,255,255,0.65);
+  text-decoration: none; letter-spacing: 0.03em;
+  transition: color 0.15s;
+}
+.footer-nav-link:hover { color: white; }
+
+.footer-lactaid {
+  font-family: 'Unica One', sans-serif;
+  font-size: 12px; color: rgba(255,255,255,0.25);
+  letter-spacing: 0.04em; line-height: 1.6;
+}
+.footer-lactaid a { color: rgba(255,255,255,0.35); text-decoration:none; }
+.footer-lactaid a:hover { color: var(--pink); }
+
+.footer-bottom {
+  position: relative; z-index: 1;
+  max-width: 960px; margin: 0 auto;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.footer-copy {
+  font-family: 'Unica One', sans-serif;
+  font-size: 11px; color: rgba(255,255,255,0.2);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 600px) {
+  .site-footer { padding: 32px 20px 24px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
 </style>
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://leahlovesicecream.com/wishlist.html">
+<meta property="og:title" content="Wishlist — Leah Loves Ice Cream">
+<meta property="og:description" content="Every ice cream spot Leah has her eye on. The bucket list.">
+<meta property="og:image" content="https://leahlovesicecream.com/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Wishlist — Leah Loves Ice Cream">
+<meta name="twitter:description" content="Every ice cream spot Leah has her eye on. The bucket list.">
+<meta name="twitter:image" content="https://leahlovesicecream.com/og-image.svg">
 </head>
 <body>
 
@@ -372,5 +483,40 @@ document.addEventListener('click', e => {
 
 loadData();
 </script>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Leah <em>Loves</em> Ice Cream</div>
+      <div class="footer-tagline">A living map of every scoop Leah has rated — from hidden Cambridge gems to soft serve on the side of the road.</div>
+      <a class="footer-insta" href="https://instagram.com/leah.loves.icecream" target="_blank">
+        📸 @leah.loves.icecream
+      </a>
+    </div>
+    <div class="footer-nav">
+      <div class="footer-nav-title">Explore</div>
+      <div class="footer-nav-links">
+        <a class="footer-nav-link" href="index.html">🗺️ The Map</a>
+        <a class="footer-nav-link" href="index.html#top10">🏆 Top 10 Rankings</a>
+        <a class="footer-nav-link" href="wishlist.html">⭐ Wishlist</a>
+        <a class="footer-nav-link" href="sidequests.html">📓 Side Quests</a>
+        <a class="footer-nav-link" href="about.html">🍦 About Leah</a>
+      </div>
+    </div>
+    <div class="footer-extra">
+      <div class="footer-nav-title">The fine print</div>
+      <div class="footer-lactaid">
+        Leah is lactose intolerant and has never once let that stop her. She takes a Lactaid with every visit without exception.<br><br>
+        Dear <a href="https://www.lactaid.com" target="_blank">Lactaid</a>: she is available for sponsorship. She is serious. Please reach out.
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Leah Loves Ice Cream · Medford, MA · leahlovesicecream.com</div>
+    <div class="footer-copy">So much ice cream, so little time.</div>
+  </div>
+</footer>
+
 </body>
 </html>
