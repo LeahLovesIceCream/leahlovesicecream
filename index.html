@@ -213,9 +213,19 @@ header::after {
 .popup-stars { display:flex; gap:1px; }
 .star-full, .star-half, .star-empty { font-size:17px; }
 .star-full  { color:#FF8C42; }
-.star-half  { position:relative; display:inline-block; }
-.star-half::before { content:'★'; color:#FF8C42; position:absolute; left:0; width:50%; overflow:hidden; }
-.star-half::after  { content:'★'; color:#ddd; }
+.star-half  { 
+  position:relative; display:inline-block;
+  color:#ddd;
+}
+.star-half::before { 
+  content:'★'; 
+  color:#FF8C42; 
+  position:absolute; 
+  left:0; top:0;
+  width:50%; 
+  overflow:hidden;
+  display:block;
+}
 .star-empty { color:#ddd; }
 .popup-rating-num { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:18px; color:var(--text); }
 
