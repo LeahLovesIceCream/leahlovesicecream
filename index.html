@@ -166,7 +166,7 @@ header::after {
 /* ─── POPUP CARD ─── */
 .popup-card {
   position:fixed; z-index:200;
-  width:300px;
+  width:340px;
   background:white; border-radius:18px;
   box-shadow:0 16px 48px rgba(0,0,0,0.16),0 2px 8px rgba(0,0,0,0.06);
   border:1px solid rgba(0,0,0,0.07);
@@ -1103,11 +1103,16 @@ function parseMultiSelect(raw) {
 
 // ── star rendering ──
 function renderStars(stars) {
+  // stars is out of 5, rendered as 5 star icons
   let html = '';
   for (let i = 1; i <= 5; i++) {
-    if (stars >= i) html += '<span class="star-full">★</span>';
-    else if (stars >= i - 0.5) html += '<span class="star-half">★</span>';
-    else html += '<span class="star-empty">★</span>';
+    if (stars >= i) {
+      html += '<span class="star-full">★</span>';
+    } else if (stars >= i - 0.5) {
+      html += '<span class="star-half">★</span>';
+    } else {
+      html += '<span class="star-empty">★</span>';
+    }
   }
   return html;
 }
@@ -1161,14 +1166,14 @@ function showPopup(pin, spot, position, centered = false) {
   // on desktop, position near click or centered
   const W = window.innerWidth, H = window.innerHeight;
   if (W > 600) {
-    const cardW = 300, cardH = 480;
+    const cardW = 340, cardH = 520;
     if (centered) {
       card.style.left = (W / 2 - cardW / 2) + 'px';
-      card.style.top  = (H / 2 - cardH / 2) + 'px';
+      card.style.top  = Math.max(60, H / 2 - cardH / 2) + 'px';
     } else {
       let x = position.x + 16, y = position.y - cardH / 2;
       if (x + cardW > W - 10) x = position.x - cardW - 16;
-      if (y < 10) y = 10;
+      if (y < 60) y = 60;
       if (y + cardH > H - 10) y = H - cardH - 10;
       card.style.left = x + 'px';
       card.style.top  = y + 'px';
@@ -1346,7 +1351,7 @@ function buildTop10Carousel(spots) {
         </div>
         <div class="card-body">
           <div class="card-name">${d.name}</div>
-          <div class="card-location">📍 ${d.address.split(',').slice(-2).join(',').trim()}</div>
+          <div class="card-location">📍 ${d.address.split(',').filter(p => !p.trim().match(/^United States$/i)).slice(-2).join(',').trim()}</div>
           <div class="card-stars">${'★'.repeat(Math.round(d.stars))}${'☆'.repeat(5-Math.round(d.stars))}</div>
           <div class="card-note">${d.flavor ? '🍨 ' + d.flavor : ''}</div>
           <div style="margin-top:10px;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#aaa">Tap for details →</div>
