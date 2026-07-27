@@ -744,6 +744,7 @@ header::after {
           <a class="hero-link" href="wishlist.html">Wishlist</a>
           <a class="hero-link" href="sidequests.html">Blog</a>
           <a class="hero-link" href="about.html">About</a>
+          <a class="hero-link" href="https://instagram.com/leah.loves.icecream" target="_blank">📸 Instagram</a>
         </div>
       </div>
       <div class="home-hero-right">
@@ -971,10 +972,16 @@ async function loadWishlistData(ratedNames) {
       };
     }).filter(s => {
       if (!s.name || !s.address) return false;
-      // cross-reference: remove if already rated
-      const alreadyRated = ratedNames.some(n =>
-        n.toLowerCase().trim() === s.name.toLowerCase().trim()
-      );
+      // cross-reference: fuzzy match — one name contains the other
+      const wName = s.name.toLowerCase().trim();
+      const alreadyRated = ratedNames.some(n => {
+        const rName = n.toLowerCase().trim();
+        return rName === wName ||
+               rName.includes(wName) ||
+               wName.includes(rName) ||
+               // fuzzy: check if first word of wishlist name appears in rated name
+               (wName.split(' ')[0].length > 3 && rName.includes(wName.split(' ')[0]));
+      });
       return !alreadyRated;
     });
 
