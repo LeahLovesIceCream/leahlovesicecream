@@ -490,7 +490,7 @@ function renderList() {
       <div class="spot-info">
         <div class="spot-name-row">
           <span class="spot-name">${s.name}</span>
-          <a class="spot-map-btn" href="index.html#map-section" title="View on map">→</a>
+          <a class="spot-map-btn" href="index.html?spot=${encodeURIComponent(s.name)}#map-section" title="View on map">→</a>
         </div>
         <div class="spot-meta">
           <span class="spot-location">📍 ${loc}</span>
