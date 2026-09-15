@@ -301,6 +301,16 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
 
+
+.crosslink-banner { max-width:960px; margin:0 auto 48px; padding:0 32px; }
+.crosslink-card { background:white; border-radius:16px; padding:24px 28px; display:flex; align-items:center; justify-content:space-between; gap:20px; border:1px solid rgba(176,32,80,0.12); box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+.crosslink-eyebrow { font-family:'Unica One',sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--crimson); margin-bottom:6px; }
+.crosslink-title { font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:22px; text-transform:uppercase; letter-spacing:0.04em; color:var(--text); margin-bottom:4px; }
+.crosslink-desc { font-family:'Unica One',sans-serif; font-size:13px; color:var(--muted); line-height:1.5; }
+.crosslink-btn { flex-shrink:0; font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:14px; text-transform:uppercase; letter-spacing:0.06em; background:var(--crimson); color:white; border:none; border-radius:8px; padding:12px 22px; cursor:pointer; text-decoration:none; transition:background 0.15s, transform 0.12s; white-space:nowrap; }
+.crosslink-btn:hover { background:var(--pink); transform:translateY(-1px); }
+@media (max-width:600px) { .crosslink-banner { padding:0 16px; } .crosslink-card { flex-direction:column; align-items:flex-start; } }
+
 </style>
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -327,7 +337,7 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
   </button>
   <nav class="nav-menu" id="navMenu">
     <a class="nav-menu-item" href="index.html#map-section"><span class="nav-item-icon">🗺️</span><div><span>Map</span><span class="nav-item-sub">Explore visited spots</span></div></a>
-    <a class="nav-menu-item" href="index.html#top10"><span class="nav-item-icon">🏆</span><div><span>Rankings</span><span class="nav-item-sub">Leah's top 10 list</span></div></a>
+    <a class="nav-menu-item" href="everyscoop.html"><span class="nav-item-icon">🏆</span><div><span>Every Scoop</span><span class="nav-item-sub">All spots ranked</span></div></a>
     <a class="nav-menu-item" href="wishlist.html"><span class="nav-item-icon">⭐</span><div><span>Wishlist</span><span class="nav-item-sub">The bucket list</span></div></a>
     <a class="nav-menu-item" href="about.html"><span class="nav-item-icon">🍦</span><div><span>About Leah</span><span class="nav-item-sub">The scoop on the scooper</span></div></a>
   </nav>
@@ -492,6 +502,19 @@ loadData();
 </script>
 
 <!-- FOOTER -->
+
+<!-- CROSS-LINK BANNER -->
+<div class="crosslink-banner">
+  <div class="crosslink-card">
+    <div class="crosslink-text">
+      <div class="crosslink-eyebrow">Curious where we've already been?</div>
+      <div class="crosslink-title">See Every Scoop</div>
+      <div class="crosslink-desc">The full ranked list of everywhere Leah has rated — searchable and filterable.</div>
+    </div>
+    <a class="crosslink-btn" href="everyscoop.html">See Rankings →</a>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-brand">
@@ -505,7 +528,7 @@ loadData();
       <div class="footer-nav-title">Explore</div>
       <div class="footer-nav-links">
         <a class="footer-nav-link" href="index.html">🗺️ The Map</a>
-        <a class="footer-nav-link" href="index.html#top10">🏆 Top 10 Rankings</a>
+        <a class="footer-nav-link" href="everyscoop.html">🏆 Every Scoop</a>
         <a class="footer-nav-link" href="wishlist.html">⭐ Wishlist</a>
         <a class="footer-nav-link" href="about.html">🍦 About Leah</a>
       </div>
