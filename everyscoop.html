@@ -142,19 +142,25 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
 
 /* spot row */
 .spot-row {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  color: var(--text);
+  overflow: hidden;
+  cursor: pointer;
+}
+.spot-row:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+.spot-row.expanded { border-color: var(--crimson); box-shadow: 0 8px 28px rgba(176,32,80,0.12); cursor:default; }
+
+.spot-row-top {
   display: grid;
   grid-template-columns: 40px 1fr auto;
   gap: 16px;
   align-items: center;
-  background: white;
-  border-radius: 14px;
   padding: 18px 22px;
-  border: 1px solid rgba(0,0,0,0.07);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  transition: transform 0.15s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s;
-  color: var(--text);
 }
-.spot-row:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); cursor:pointer; }
 
 .spot-name-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
 
@@ -167,6 +173,46 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
   border: 1px solid rgba(255,140,66,0.2);
 }
 .spot-map-btn:hover { background:var(--orange); color:white; }
+
+/* expanded detail panel */
+.spot-detail {
+  display: none;
+  padding: 0 22px 20px 78px;
+  border-top: 1px solid #f2f2f2;
+  margin-top: 0;
+  padding-top: 16px;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+.spot-row.expanded .spot-detail { display: block; }
+
+/* score bars */
+.detail-bars { display:flex; flex-direction:column; gap:7px; margin-bottom:14px; }
+.detail-bar-row { display:flex; align-items:center; gap:10px; }
+.detail-bar-label { font-family:'Unica One',sans-serif; font-size:12px; color:#666; width:130px; flex-shrink:0; }
+.detail-bar-track { flex:1; height:6px; background:#f0f0f0; border-radius:3px; overflow:hidden; }
+.detail-bar-fill { height:100%; border-radius:3px; background:var(--orange); }
+.detail-bar-num { font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:13px; color:var(--text); width:20px; text-align:right; }
+
+.detail-row { display:flex; gap:8px; align-items:flex-start; margin-bottom:10px; font-size:13px; }
+.detail-row-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+.detail-label { font-family:'Big Shoulders Display',sans-serif; font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:#aaa; display:block; margin-bottom:2px; }
+.detail-val { font-family:'Unica One',sans-serif; color:var(--text); font-size:13px; line-height:1.45; }
+
+.detail-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:4px; }
+.detail-tag { font-family:'Unica One',sans-serif; font-size:11px; padding:3px 9px; border-radius:5px; background:#FFF3E0; color:#E05A00; border:1px solid rgba(255,140,0,0.2); }
+.detail-vibe-tag { background:#f5f5f5; color:#555; border:1px solid rgba(0,0,0,0.08); }
+
+.detail-maps-btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  background:var(--crimson); color:white; border:none; border-radius:8px;
+  padding:9px 18px; width:100%;
+  font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:13px;
+  text-transform:uppercase; letter-spacing:0.07em;
+  cursor:pointer; text-decoration:none; margin-top:10px;
+  transition:background 0.15s;
+}
+.detail-maps-btn:hover { background:var(--pink); }
 
 .spot-rank {
   font-family: 'Big Shoulders Display', sans-serif;
@@ -397,6 +443,15 @@ const SHEET_ID  = '1FWTUBZaZFE6S99jrON26zAg2W8-Y465udQssaSBKvCM';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Form%20Responses%201`;
 
 const COL = { timestamp:0, name:1, address:2, date:3, type:4, flavor:5, taste:6, texture:7, mixins:8, bang:9, desirability:10, vibe:11, bonuses:12, comments:13 };
+
+function parseMulti(raw) {
+  if (!raw) return [];
+  return raw.split(',').map(s => {
+    s = s.trim();
+    if (s.toLowerCase().startsWith('other:')) s = s.slice(6).trim();
+    return s;
+  }).filter(Boolean);
+}
 const TYPE_COLORS = { 'homemade ice cream':'#FF8C42', 'soft serve':'#5BC8F5', 'big ice cream':'#FFD84A' };
 const TYPE_LABELS = { 'homemade ice cream':'Homemade', 'soft serve':'Soft Serve', 'big ice cream':'Big Chain' };
 
@@ -421,10 +476,16 @@ async function loadData() {
       const stars = Math.round(avg / 2 * 2) / 2;
       const rating = Math.round(avg / 2 * 10) / 10;
       const dateRaw = get(COL.date);
+      const rawVibes   = get(COL.vibe);
+      const rawBonuses = get(COL.bonuses);
       return {
         name: get(COL.name), address: get(COL.address),
         date: dateRaw, type: get(COL.type).toLowerCase(),
         flavor: get(COL.flavor), stars, rating,
+        taste, texture, mixins, bang, desirability: desir,
+        vibes:   parseMulti(rawVibes),
+        bonuses: parseMulti(rawBonuses),
+        comments: get(COL.comments),
         mapsUrl: `https://maps.google.com/?q=${encodeURIComponent(get(COL.address))}`
       };
     }).filter(s => s.name);
@@ -485,22 +546,41 @@ function renderList() {
     const isDark = s.type === 'big ice cream';
     const loc    = s.address.split(',').filter(p => !p.trim().match(/^United States$/i) && !p.trim().match(/\d{5}/)).slice(-2).join(',').trim();
 
-    return `<div class="spot-row">
-      <div class="spot-rank ${globalRank <= 3 ? 'top3' : ''}">${globalRank}</div>
-      <div class="spot-info">
-        <div class="spot-name-row">
-          <span class="spot-name">${s.name}</span>
-          <a class="spot-map-btn" href="index.html?spot=${encodeURIComponent(s.name)}#map-section" title="View on map">→</a>
+    const vibes   = s.vibes   || [];
+    const bonuses  = s.bonuses || [];
+    const comments = s.comments || '';
+
+    return `<div class="spot-row" onclick="toggleExpand(this)">
+      <div class="spot-row-top">
+        <div class="spot-rank ${globalRank <= 3 ? 'top3' : ''}">${globalRank}</div>
+        <div class="spot-info">
+          <div class="spot-name-row">
+            <span class="spot-name">${s.name}</span>
+            <a class="spot-map-btn" href="${s.mapsUrl}" target="_blank" title="Open in Google Maps" onclick="event.stopPropagation()">↗</a>
+          </div>
+          <div class="spot-meta">
+            <span class="spot-location">📍 ${loc}</span>
+            <span class="spot-type-badge" style="background:${color};color:${isDark?'#111':'white'}">${label}</span>
+          </div>
+          ${s.flavor ? `<div class="spot-flavor">🍨 ${s.flavor}</div>` : ''}
         </div>
-        <div class="spot-meta">
-          <span class="spot-location">📍 ${loc}</span>
-          <span class="spot-type-badge" style="background:${color};color:${isDark?'#111':'white'}">${label}</span>
+        <div class="spot-right">
+          <div class="spot-stars">${renderStars(s.stars)}</div>
+          <div class="spot-score">${s.rating}<span> / 5</span></div>
         </div>
-        ${s.flavor ? `<div class="spot-flavor">🍨 ${s.flavor}</div>` : ''}
       </div>
-      <div class="spot-right">
-        <div class="spot-stars">${renderStars(s.stars)}</div>
-        <div class="spot-score">${s.rating}<span> / 5</span></div>
+      <div class="spot-detail">
+        <div class="detail-bars">
+          <div class="detail-bar-row"><div class="detail-bar-label">👅 Taste</div><div class="detail-bar-track"><div class="detail-bar-fill" style="width:${s.taste*10}%;background:${color}"></div></div><div class="detail-bar-num">${s.taste}</div></div>
+          <div class="detail-bar-row"><div class="detail-bar-label">✋ Texture</div><div class="detail-bar-track"><div class="detail-bar-fill" style="width:${s.texture*10}%;background:${color}"></div></div><div class="detail-bar-num">${s.texture}</div></div>
+          <div class="detail-bar-row"><div class="detail-bar-label">🍫 Mix-ins</div><div class="detail-bar-track"><div class="detail-bar-fill" style="width:${s.mixins*10}%;background:${color}"></div></div><div class="detail-bar-num">${s.mixins}</div></div>
+          <div class="detail-bar-row"><div class="detail-bar-label">💰 Bang for Buck</div><div class="detail-bar-track"><div class="detail-bar-fill" style="width:${s.bang*10}%;background:${color}"></div></div><div class="detail-bar-num">${s.bang}</div></div>
+          <div class="detail-bar-row"><div class="detail-bar-label">🧁 Other Flavors</div><div class="detail-bar-track"><div class="detail-bar-fill" style="width:${s.desirability*10}%;background:${color}"></div></div><div class="detail-bar-num">${s.desirability}</div></div>
+        </div>
+        ${vibes.length ? `<div class="detail-tags">${vibes.map(v=>`<span class="detail-tag detail-vibe-tag">${v}</span>`).join('')}</div><br>` : ''}
+        ${comments ? `<div class="detail-row"><span class="detail-row-icon">💬</span><div><span class="detail-label">Comments</span><span class="detail-val">${comments}</span></div></div>` : ''}
+        ${bonuses.length ? `<div class="detail-row"><span class="detail-row-icon">✨</span><div><span class="detail-label">Bonuses</span><div class="detail-tags">${bonuses.map(b=>`<span class="detail-tag">${b}</span>`).join('')}</div></div></div>` : ''}
+        <a class="detail-maps-btn" href="${s.mapsUrl}" target="_blank" onclick="event.stopPropagation()">📍 Open in Google Maps</a>
       </div>
     </div>`;
   }).join('');
@@ -528,6 +608,17 @@ function toggleRating(rating, el) {
     other.classList.remove('on-green');
   }
   renderList();
+}
+
+function toggleExpand(row) {
+  const isExpanded = row.classList.contains('expanded');
+  // Close all others
+  document.querySelectorAll('.spot-row.expanded').forEach(r => r.classList.remove('expanded'));
+  // Toggle this one
+  if (!isExpanded) {
+    row.classList.add('expanded');
+    row.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
 }
 
 function toggleMenu(e) {
