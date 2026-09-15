@@ -148,15 +148,25 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
   align-items: center;
   background: white;
   border-radius: 14px;
-  padding: 16px 20px;
+  padding: 18px 22px;
   border: 1px solid rgba(0,0,0,0.07);
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  cursor: pointer;
   transition: transform 0.15s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s;
-  text-decoration: none;
   color: var(--text);
 }
-.spot-row:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.spot-row:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); cursor:pointer; }
+
+.spot-name-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
+
+.spot-map-btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; border-radius:50%;
+  background: var(--cream); color: var(--orange);
+  font-size:12px; font-weight:900; text-decoration:none;
+  flex-shrink:0; transition:background 0.15s;
+  border: 1px solid rgba(255,140,66,0.2);
+}
+.spot-map-btn:hover { background:var(--orange); color:white; }
 
 .spot-rank {
   font-family: 'Big Shoulders Display', sans-serif;
@@ -256,12 +266,6 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
 .footer-copy { font-family:'Unica One',sans-serif; font-size:11px; color:rgba(255,255,255,0.2); letter-spacing:0.05em; }
 
 
-.spot-map-link {
-  display:block; margin-top:6px; font-size:14px; text-decoration:none;
-  opacity:0.4; transition:opacity 0.15s; text-align:right;
-}
-.spot-map-link:hover { opacity:1; }
-
 /* ─── MOBILE ─── */
 @media (max-width: 600px) {
   header { padding:10px 16px 8px; }
@@ -294,7 +298,7 @@ header::after { content:''; position:absolute; top:0; right:160px; width:3px; he
   </button>
   <nav class="nav-menu" id="navMenu">
     <a class="nav-menu-item" href="index.html#map-section"><span class="nav-item-icon">🗺️</span><div><span>Map</span><span class="nav-item-sub">Explore visited spots</span></div></a>
-    <a class="nav-menu-item" href="everyscoop.html"><span class="nav-item-icon">🏆</span><div><span>Every Scoop</span><span class="nav-item-sub">All spots ranked</span></div></a>
+    <a class="nav-menu-item" href="everyscoop.html"><span class="nav-item-icon">🏆</span><div><span>Rankings</span><span class="nav-item-sub">All spots ranked</span></div></a>
     <a class="nav-menu-item" href="wishlist.html"><span class="nav-item-icon">⭐</span><div><span>Wishlist</span><span class="nav-item-sub">The bucket list</span></div></a>
     <a class="nav-menu-item" href="about.html"><span class="nav-item-icon">🍦</span><div><span>About Leah</span><span class="nav-item-sub">The scoop on the scooper</span></div></a>
   </nav>
@@ -479,12 +483,15 @@ function renderList() {
     const color  = TYPE_COLORS[s.type] || '#FF8C42';
     const label  = TYPE_LABELS[s.type] || s.type;
     const isDark = s.type === 'big ice cream';
-    const loc    = s.address.split(',').filter(p => !p.trim().match(/^United States$/i)).slice(-2).join(',').trim();
+    const loc    = s.address.split(',').filter(p => !p.trim().match(/^United States$/i) && !p.trim().match(/\d{5}/)).slice(-2).join(',').trim();
 
-    return `<a class="spot-row" href="${s.mapsUrl}" target="_blank">
+    return `<div class="spot-row">
       <div class="spot-rank ${globalRank <= 3 ? 'top3' : ''}">${globalRank}</div>
       <div class="spot-info">
-        <div class="spot-name">${s.name}</div>
+        <div class="spot-name-row">
+          <span class="spot-name">${s.name}</span>
+          <a class="spot-map-btn" href="index.html#map-section" title="View on map">→</a>
+        </div>
         <div class="spot-meta">
           <span class="spot-location">📍 ${loc}</span>
           <span class="spot-type-badge" style="background:${color};color:${isDark?'#111':'white'}">${label}</span>
@@ -494,9 +501,8 @@ function renderList() {
       <div class="spot-right">
         <div class="spot-stars">${renderStars(s.stars)}</div>
         <div class="spot-score">${s.rating}<span> / 5</span></div>
-        <a class="spot-map-link" href="index.html#map-section" title="View on map" onclick="event.stopPropagation()">🗺️</a>
       </div>
-    </a>`;
+    </div>`;
   }).join('');
 }
 
